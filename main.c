@@ -1,26 +1,25 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef long word;
-typedef int hWord;
-typedef char byte;
-typedef long uWord;
-typedef int uHWord;
-typedef char uByte;
-
-#define BYTE_TO_BINARY_PATTERN "%c%c%c%c%c%c%c%c"
-#define BYTE_TO_BINARY(byte)  \
-  ((byte) & 0x80 ? '1' : '0'), \
-  ((byte) & 0x40 ? '1' : '0'), \
-  ((byte) & 0x20 ? '1' : '0'), \
-  ((byte) & 0x10 ? '1' : '0'), \
-  ((byte) & 0x08 ? '1' : '0'), \
-  ((byte) & 0x04 ? '1' : '0'), \
-  ((byte) & 0x02 ? '1' : '0'), \
-  ((byte) & 0x01 ? '1' : '0')
+#include "memMan.h"
 
 
 int main(){
-    word ha = 0xaaaaaaaa;
-	printf("hello world\n");
+    initMem();
+    word cp = getInitCP();
+
+    setWord(0x11223344,cp);
+    word r = getWord(cp);
+
+    cp += 4;
+    setHWord(0x1122,cp);
+    hWord hr = getHWord(cp);
+
+    cp += 4;
+    setByte(0x11,cp);
+    byte br = getByte(cp);
+
+	printf("%ld\n", r);
+    printf("%\n", hr);
+    printf("%c\n", br);
 }
