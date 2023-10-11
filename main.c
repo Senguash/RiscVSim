@@ -2,24 +2,13 @@
 #include <stdlib.h>
 
 #include "memMan.h"
+#include "fileReader.h"
 
 
-int main(){
+int main(int argc, char* argv[]){
     initMem();
     word cp = getInitPC();
+    readFile("C:/Users/juliu/CLionProjects/RiscVSim/addlarge.bin");
 
-    setWord(1234,cp);
-    word r = getWord(cp);
 
-    cp += 4;
-    setHWord(123,cp);
-    hWord hr = getHWord(cp);
-
-    cp += 4;
-    setByte(13,cp);
-    byte br = getByte(cp);
-
-	printf("%ld\n", r);
-    printf("%d\n", hr);
-    printf("%d\n", br);
 }
