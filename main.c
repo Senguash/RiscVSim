@@ -6,7 +6,7 @@
 
 int main(){
     initMem();
-    word cp = getInitCP();
+    word cp = getInitPC();
 
     setWord(0x11223344,cp);
     word r = getWord(cp);
