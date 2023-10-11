@@ -16,10 +16,10 @@ void initMem() {
 }
 
 /**
- * gets *CP
- * @return word* cp
+ * gets PC
+ * @return word PC
  */
-word getInitCP(){
+word getInitPC(){
     return 0;
 }
 
@@ -54,6 +54,32 @@ word getWord(word address){
  * @param value to store in mem
  * @param address addres to store value in mem
  */
+void setUWord(uWord value, word address){
+    mainMem[address+3] = value>>BIT_PR_BYTE*3;
+    mainMem[address+2] = (value<<BIT_PR_BYTE)>>BIT_PR_BYTE*3;
+    mainMem[address+1] = (value<<BIT_PR_BYTE*2)>>BIT_PR_BYTE*3;
+    mainMem[address] = (value<<BIT_PR_BYTE*3)>>BIT_PR_BYTE*3;
+}
+
+/**
+ * gets the uWord at address
+ * @param address got get uWord
+ * @return uWord at address
+ */
+uWord getUWord(word address){
+    uWord temp = 0;
+    temp = temp | mainMem[address];
+    temp = temp | (((long)mainMem[address+1])<<BIT_PR_BYTE);
+    temp = temp | (((long)mainMem[address+2])<<BIT_PR_BYTE*2);
+    temp = temp | (((long)mainMem[address+3])<<BIT_PR_BYTE*3);
+    return temp;
+}
+
+/**
+ * sets the value at the address.
+ * @param value to store in mem
+ * @param address addres to store value in mem
+ */
 void setHWord(hWord value, word address){
     mainMem[address+1] = value>>BIT_PR_BYTE;
     mainMem[address] = (value<<BIT_PR_BYTE)>>BIT_PR_BYTE;
@@ -76,6 +102,28 @@ hWord getHWord(word address){
  * @param value to store in mem
  * @param address addres to store value in mem
  */
+void setUHWord(uHWord value, word address){
+    mainMem[address+1] = value>>BIT_PR_BYTE;
+    mainMem[address] = (value<<BIT_PR_BYTE)>>BIT_PR_BYTE;
+}
+
+/**
+ * gets the uHWord at address
+ * @param address got get uHWord
+ * @return uHWord at address
+ */
+uHWord getUHWord(word address){
+    uHWord temp = 0;
+    temp = temp | mainMem[address];
+    temp = temp | (((long)mainMem[address+1])<<BIT_PR_BYTE);
+    return temp;
+}
+
+/**
+ * sets the value at the address.
+ * @param value to store in mem
+ * @param address addres to store value in mem
+ */
 void setByte(byte value, word address){
     mainMem[address] = value;
 }
@@ -86,5 +134,23 @@ void setByte(byte value, word address){
  * @return byte at address
  */
 byte getByte(word address){
+    return mainMem[address];
+}
+
+/**
+ * sets the value at the address.
+ * @param value to store in mem
+ * @param address addres to store value in mem
+ */
+void setUByte(uByte value, word address){
+    mainMem[address] = value;
+}
+
+/**
+ * gets the uByte at address
+ * @param address got get uByte
+ * @return uByte at address
+ */
+uByte getUByte(word address){
     return mainMem[address];
 }
