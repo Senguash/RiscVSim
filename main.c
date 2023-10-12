@@ -9,6 +9,4 @@ int main(int argc, char* argv[]){
     initMem();
     word cp = getInitPC();
     readFile("C:/Users/juliu/CLionProjects/RiscVSim/addlarge.bin");
-
-
 }

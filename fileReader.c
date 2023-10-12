@@ -5,6 +5,7 @@
 #include "fileReader.h"
 
 void readFile(char file[]){
+    uWord fileSize = fsize(file);
     FILE *ptr_myfile;
     ptr_myfile=fopen(file,"rb");
     if (!ptr_myfile)
@@ -15,9 +16,24 @@ void readFile(char file[]){
     initMem();
     uWord pc = getInitPC();
     byte readByte;
-    while ((readByte = fgetc(ptr_myfile)) != EOF){ //todo måden filen læses på skal ændres
+    while (pc <= fileSize){ //todo måden filen læses på skal ændres
+        readByte = fgetc(ptr_myfile);
         setByte(readByte,pc);
         pc++;
     }
+    setByte(0x00, pc-1);
     fclose(ptr_myfile);
+}
+
+
+off_t fsize(const char *filename) {
+    struct stat st;
+
+    if (stat(filename, &st) == 0)
+        return st.st_size;
+
+    fprintf(stderr, "Cannot determine size of %s: %s\n",
+            filename, strerror(errno));
+
+    return -1;
 }
