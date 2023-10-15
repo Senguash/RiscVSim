@@ -15,5 +15,13 @@ typedef unsigned char uByte;
 #define BIT_PR_BYTE 8
 #define MAIN_MEM_SIZE 1000000
 
+#define DEBUG
+
+#ifdef DEBUG
+#define DEBUG_PRINT printf
+#else
+#define DEBUG_PRINT(...)    /* Don't do anything in release builds */
+#endif
+
 
 #endif //RISCVSIM_TYPES_H

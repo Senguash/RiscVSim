@@ -3,10 +3,21 @@
 
 #include "memMan.h"
 #include "fileReader.h"
+#include "processor.h"
 
 
 int main(int argc, char* argv[]){
-    initMem();
-    word cp = getInitPC();
-    readFile("C:/Users/juliu/CLionProjects/RiscVSim/addlarge.bin");
+    char cwd[256];
+    if (getcwd(cwd, sizeof(cwd)) != NULL) {
+        printf("Current working dir: %s\n", cwd);
+    }
+    else {
+        perror("getcwd() error");
+    }
+    byte mainMem[MAIN_MEM_SIZE];
+    readFile("../RiscVSim/addlarge.bin");
+
+    InternalProcessorMemory ipm;
+    ipm.pc = getInitPC(mainMem);
+    Compute(ipm);
 }

@@ -20,6 +20,7 @@ void initMem() {
  * @return word PC
  */
 word getInitPC(){
+    DEBUG_PRINT("Getting initial PC is not implemented\n");
     return 0;
 }
 
@@ -28,7 +29,7 @@ word getInitPC(){
  * @param value to store in mem
  * @param address addres to store value in mem
  */
-void setWord(word value, word address){
+void setWord(word value, word address) {
     mainMem[address+3] = value>>BIT_PR_BYTE*3;
     mainMem[address+2] = (value<<BIT_PR_BYTE)>>BIT_PR_BYTE*3;
     mainMem[address+1] = (value<<BIT_PR_BYTE*2)>>BIT_PR_BYTE*3;

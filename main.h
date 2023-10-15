@@ -2,6 +2,8 @@
 // Created by juliu on 09-10-2023.
 //
 
+//Usage: printf("Leading text "BYTE_TO_BINARY_PATTERN, BYTE_TO_BINARY(byte));
+
 #ifndef RISCVSIM_MAIN_H
 #define RISCVSIM_MAIN_H
 #define BYTE_TO_BINARY_PATTERN "%c%c%c%c%c%c%c%c"
