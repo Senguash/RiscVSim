@@ -9,7 +9,7 @@ int main(int argc, char* argv[]){
     else {
         perror("getcwd() error");
     }*/
-    readFile("../../RiscVSim/addlarge.bin");
+    readFile("../RiscVSim/addlarge.bin");
 
     InternalProcessorMemory ipm;
     ipm.exitInvoked = 0;
