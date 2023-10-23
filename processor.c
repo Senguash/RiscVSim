@@ -4,21 +4,21 @@
 #include "processor.h"
 
 
-void Compute(InternalProcessorMemory ipm) {
-	for (int i = 0; i < 10; i++) {
-		ipm.instruction = getWord((word)ipm.pc * 4);
+void Compute(InternalProcessorMemory *ipm) {
+	while (ipm->exitInvoked == 0) {
+		ipm->instruction = getWord((word)ipm->pc * 4);
 		ExecuteInstruction(ipm);
-		ipm.pc++;
+		ipm->pc++;
 	}
 }
 /**
 Executes the current instruction in ipm
  */
-void ExecuteInstruction(InternalProcessorMemory ipm) {
-	byte opcode = ipm.instruction & 0b01111111;
+void ExecuteInstruction(InternalProcessorMemory *ipm) {
+	byte opcode = ipm->instruction & 0b01111111;
 	DEBUG_PRINT("\nOpcode="BYTE_TO_BINARY_PATTERN, BYTE_TO_BINARY(opcode));
-	//DEBUG_PRINT("\nFunct3="BYTE_TO_BINARY_PATTERN, BYTE_TO_BINARY(GetFunct3(ipm.instruction)));
-	//DEBUG_PRINT("\nFunct7="BYTE_TO_BINARY_PATTERN, BYTE_TO_BINARY(GetFunct7(ipm.instruction)));
+	DEBUG_PRINT("\nFunct3="BYTE_TO_BINARY_PATTERN, BYTE_TO_BINARY(GetFunct3(ipm->instruction)));
+	DEBUG_PRINT("\nFunct7="BYTE_TO_BINARY_PATTERN, BYTE_TO_BINARY(GetFunct7(ipm->instruction)));
 	switch (opcode) {
 		case (0b0110011):
 			LogicalArithmetic(ipm);
@@ -59,6 +59,9 @@ void ExecuteInstruction(InternalProcessorMemory ipm) {
 			DEBUG_PRINT("\nECALL");
 			ECALL(ipm);
 			break;
+		default:
+			DEBUG_PRINT("Invalid Instruction Reached\n");
+			ipm->exitInvoked = 1;
 	}
 }
 /**
@@ -76,43 +79,43 @@ byte GetFunct7(word instruction) {
 /**
 Gets the index of the destination register
  */
-byte GetRD(InternalProcessorMemory ipm) {
-	return (byte)((ipm.instruction >> 7) & 0b00011111);
+byte GetRD(InternalProcessorMemory *ipm) {
+	return (byte)((ipm->instruction >> 7) & 0b00011111);
 }
 /**
 Gets the index of first source register
  */
-byte GetRS1(InternalProcessorMemory ipm) {
-	return (byte)((ipm.instruction >> 15) & 0b00011111);
+byte GetRS1(InternalProcessorMemory *ipm) {
+	return (byte)((ipm->instruction >> 15) & 0b00011111);
 }
 /**
 Gets the index of second source register
  */
-byte GetRS2(InternalProcessorMemory ipm) {
-	return (byte)((ipm.instruction >> 20) & 0b00011111);
+byte GetRS2(InternalProcessorMemory *ipm) {
+	return (byte)((ipm->instruction >> 20) & 0b00011111);
 }
 /**
 Gets the value of a register by index
  */
-word GetRegisterValue(byte index, InternalProcessorMemory ipm) {
-	return ipm.registers[index];
+word GetRegisterValue(byte index, InternalProcessorMemory *ipm) {
+	return ipm->registers[index];
 }
 /**
 Sets the value of a register by index
  */
-void SetRegisterValue(byte index, word input, InternalProcessorMemory ipm) {
-	ipm.registers[index] = input;
+void SetRegisterValue(byte index, word input, InternalProcessorMemory *ipm) {
+	ipm->registers[index] = input;
 }
 
 hWord GetImm11to0(word instruction) {
 	return (hWord)((instruction >> 20) & 0b111111111111);
 }
 
-void LogicalArithmetic(InternalProcessorMemory ipm) {
-	switch (GetFunct3(ipm.instruction)) {
+void LogicalArithmetic(InternalProcessorMemory *ipm) {
+	switch (GetFunct3(ipm->instruction)) {
 	case (0b000):
 		{
-			switch (GetFunct7(ipm.instruction)) {
+			switch (GetFunct7(ipm->instruction)) {
 			case (0b0000000):
 				DEBUG_PRINT("\nADD");
 				ADD(ipm);
@@ -142,7 +145,7 @@ void LogicalArithmetic(InternalProcessorMemory ipm) {
 		break;
 	case (0b101):
 	{
-		switch (GetFunct7(ipm.instruction)) {
+		switch (GetFunct7(ipm->instruction)) {
 		case (0b0000000):
 			DEBUG_PRINT("\nSRL");
 			SRL(ipm);
@@ -165,8 +168,8 @@ void LogicalArithmetic(InternalProcessorMemory ipm) {
 	}
 }
 
-void LogicalArithmeticImmediate(InternalProcessorMemory ipm) {
-	switch (GetFunct3(ipm.instruction)) {
+void LogicalArithmeticImmediate(InternalProcessorMemory *ipm) {
+	switch (GetFunct3(ipm->instruction)) {
 	case (0b000):
 		DEBUG_PRINT("\nADDI");
 		ADDI(ipm);
@@ -189,7 +192,7 @@ void LogicalArithmeticImmediate(InternalProcessorMemory ipm) {
 		break;
 	case (0b101):
 	{
-		switch (GetFunct7(ipm.instruction)) {
+		switch (GetFunct7(ipm->instruction)) {
 		case (0b0000000):
 			DEBUG_PRINT("\nSRLI");
 			SRLI(ipm);
@@ -212,8 +215,8 @@ void LogicalArithmeticImmediate(InternalProcessorMemory ipm) {
 	}
 }
 
-void Load(InternalProcessorMemory ipm) {
-	switch (GetFunct3(ipm.instruction)) {
+void Load(InternalProcessorMemory *ipm) {
+	switch (GetFunct3(ipm->instruction)) {
 	case (0b000):
 		DEBUG_PRINT("\nLB");
 		LB(ipm);
@@ -237,8 +240,8 @@ void Load(InternalProcessorMemory ipm) {
 	}
 }
 
-void Store(InternalProcessorMemory ipm) {
-	switch (GetFunct3(ipm.instruction)) {
+void Store(InternalProcessorMemory *ipm) {
+	switch (GetFunct3(ipm->instruction)) {
 	case (0b000):
 		DEBUG_PRINT("\nSB");
 		SB(ipm);
@@ -254,8 +257,8 @@ void Store(InternalProcessorMemory ipm) {
 	}
 }
 
-void Branch(InternalProcessorMemory ipm) {
-	switch (GetFunct3(ipm.instruction)) {
+void Branch(InternalProcessorMemory *ipm) {
+	switch (GetFunct3(ipm->instruction)) {
 	case (0b000):
 		DEBUG_PRINT("\nBEQ");
 		BEQ(ipm);
@@ -283,158 +286,158 @@ void Branch(InternalProcessorMemory ipm) {
 	}
 }
 
-void ADD(InternalProcessorMemory ipm) {
-	ipm.registers[GetRD(ipm)] = ipm.registers[GetRS1(ipm)] + ipm.registers[GetRS2(ipm)];
+void ADD(InternalProcessorMemory *ipm) {
+	ipm->registers[GetRD(ipm)] = ipm->registers[GetRS1(ipm)] + ipm->registers[GetRS2(ipm)];
 }
 
-void SUB(InternalProcessorMemory ipm) {
-	ipm.registers[GetRD(ipm)] = ipm.registers[GetRS1(ipm)] - ipm.registers[GetRS2(ipm)];
+void SUB(InternalProcessorMemory *ipm) {
+	ipm->registers[GetRD(ipm)] = ipm->registers[GetRS1(ipm)] - ipm->registers[GetRS2(ipm)];
 }
 
-void SLL(InternalProcessorMemory ipm) {
+void SLL(InternalProcessorMemory *ipm) {
 	DEBUG_PRINT("\nNot Implemented");
 }
 
-void SLT(InternalProcessorMemory ipm) {
+void SLT(InternalProcessorMemory *ipm) {
 	DEBUG_PRINT("\nNot Implemented");
 }
 
-void SLTU(InternalProcessorMemory ipm) {
+void SLTU(InternalProcessorMemory *ipm) {
 	DEBUG_PRINT("\nNot Implemented");
 }
 
-void XOR(InternalProcessorMemory ipm) {
+void XOR(InternalProcessorMemory *ipm) {
 	DEBUG_PRINT("\nNot Implemented");
 }
 
-void SRL(InternalProcessorMemory ipm) {
+void SRL(InternalProcessorMemory *ipm) {
 	DEBUG_PRINT("\nNot Implemented");
 }
 
-void SRA(InternalProcessorMemory ipm) {
+void SRA(InternalProcessorMemory *ipm) {
 	DEBUG_PRINT("\nNot Implemented");
 }
 
-void OR(InternalProcessorMemory ipm) {
+void OR(InternalProcessorMemory *ipm) {
 	DEBUG_PRINT("\nNot Implemented");
 }
 
-void AND(InternalProcessorMemory ipm) {
+void AND(InternalProcessorMemory *ipm) {
 	DEBUG_PRINT("\nNot Implemented");
 }
 
-void ADDI(InternalProcessorMemory ipm) {
+void ADDI(InternalProcessorMemory *ipm) {
 	DEBUG_PRINT("\nNot Implemented");
 }
 
-void SLLI(InternalProcessorMemory ipm) {
+void SLLI(InternalProcessorMemory *ipm) {
 	DEBUG_PRINT("\nNot Implemented");
 }
 
-void SLTI(InternalProcessorMemory ipm) {
+void SLTI(InternalProcessorMemory *ipm) {
 	DEBUG_PRINT("\nNot Implemented");
 }
 
-void SLTIU(InternalProcessorMemory ipm) {
+void SLTIU(InternalProcessorMemory *ipm) {
 	DEBUG_PRINT("\nNot Implemented");
 }
 
-void XORI(InternalProcessorMemory ipm) {
+void XORI(InternalProcessorMemory *ipm) {
 	DEBUG_PRINT("\nNot Implemented");
 }
 
-void SRLI(InternalProcessorMemory ipm) {
+void SRLI(InternalProcessorMemory *ipm) {
 	DEBUG_PRINT("\nNot Implemented");
 }
 
-void SRAI(InternalProcessorMemory ipm) {
+void SRAI(InternalProcessorMemory *ipm) {
 	DEBUG_PRINT("\nNot Implemented");
 }
 
-void ORI(InternalProcessorMemory ipm) {
+void ORI(InternalProcessorMemory *ipm) {
 	DEBUG_PRINT("\nNot Implemented");
 }
 
-void ANDI(InternalProcessorMemory ipm) {
+void ANDI(InternalProcessorMemory *ipm) {
 	DEBUG_PRINT("\nNot Implemented");
 }
 
-void LB(InternalProcessorMemory ipm) {
+void LB(InternalProcessorMemory *ipm) {
 	DEBUG_PRINT("\nNot Implemented");
 }
 
-void LH(InternalProcessorMemory ipm) {
+void LH(InternalProcessorMemory *ipm) {
 	DEBUG_PRINT("\nNot Implemented");
 }
 
-void LW(InternalProcessorMemory ipm) {
+void LW(InternalProcessorMemory *ipm) {
 	DEBUG_PRINT("\nNot Implemented");
 }
 
-void LBU(InternalProcessorMemory ipm) {
+void LBU(InternalProcessorMemory *ipm) {
 	DEBUG_PRINT("\nNot Implemented");
 }
 
-void LHU(InternalProcessorMemory ipm) {
+void LHU(InternalProcessorMemory *ipm) {
 	DEBUG_PRINT("\nNot Implemented");
 }
 
-void SB(InternalProcessorMemory ipm) {
+void SB(InternalProcessorMemory *ipm) {
 	DEBUG_PRINT("\nNot Implemented");
 }
 
-void SH(InternalProcessorMemory ipm) {
+void SH(InternalProcessorMemory *ipm) {
 	DEBUG_PRINT("\nNot Implemented");
 }
 
-void SW(InternalProcessorMemory ipm) {
+void SW(InternalProcessorMemory *ipm) {
 	DEBUG_PRINT("\nNot Implemented");
 }
 
-void BEQ(InternalProcessorMemory ipm) {
+void BEQ(InternalProcessorMemory *ipm) {
 	DEBUG_PRINT("\nNot Implemented");
 }
 
-void BNE(InternalProcessorMemory ipm) {
+void BNE(InternalProcessorMemory *ipm) {
 	DEBUG_PRINT("\nNot Implemented");
 }
 
-void BLT(InternalProcessorMemory ipm) {
+void BLT(InternalProcessorMemory *ipm) {
 	DEBUG_PRINT("\nNot Implemented");
 }
 
-void BGE(InternalProcessorMemory ipm) {
+void BGE(InternalProcessorMemory *ipm) {
 	DEBUG_PRINT("\nNot Implemented");
 }
 
-void BLTU(InternalProcessorMemory ipm) {
+void BLTU(InternalProcessorMemory *ipm) {
 	DEBUG_PRINT("\nNot Implemented");
 }
 
-void BGEU(InternalProcessorMemory ipm) {
+void BGEU(InternalProcessorMemory *ipm) {
 	DEBUG_PRINT("\nNot Implemented");
 }
 
-void LUI(InternalProcessorMemory ipm) {
+void LUI(InternalProcessorMemory *ipm) {
 	DEBUG_PRINT("\nNot Implemented");
 }
 
-void AUIPC(InternalProcessorMemory ipm) {
+void AUIPC(InternalProcessorMemory *ipm) {
 	DEBUG_PRINT("\nNot Implemented");
 }
 
-void JAL(InternalProcessorMemory ipm) {
+void JAL(InternalProcessorMemory *ipm) {
 	DEBUG_PRINT("\nNot Implemented");
 }
 
-void JALR(InternalProcessorMemory ipm) {
+void JALR(InternalProcessorMemory *ipm) {
 	DEBUG_PRINT("\nNot Implemented");
 }
 
-void PAUSE(InternalProcessorMemory ipm) {
+void PAUSE(InternalProcessorMemory *ipm) {
 	DEBUG_PRINT("\nNot Implemented");
 }
 
-void ECALL(InternalProcessorMemory ipm) {
+void ECALL(InternalProcessorMemory *ipm) {
 	DEBUG_PRINT("\nNot Implemented");
 }

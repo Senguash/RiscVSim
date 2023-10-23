@@ -13,6 +13,7 @@ int main(int argc, char* argv[]){
     readFile("../RiscVSim/addlarge.bin");
 
     InternalProcessorMemory ipm;
+    ipm.exitInvoked = 0;
     ipm.pc = getInitPC(mainMem);
-    Compute(ipm);
+    Compute(&ipm);
 }
