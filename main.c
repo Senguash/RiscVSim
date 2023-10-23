@@ -9,11 +9,10 @@ int main(int argc, char* argv[]){
     else {
         perror("getcwd() error");
     }*/
-    byte mainMem[MAIN_MEM_SIZE];
-    readFile("../RiscVSim/addlarge.bin");
+    readFile("../../RiscVSim/addlarge.bin");
 
     InternalProcessorMemory ipm;
     ipm.exitInvoked = 0;
-    ipm.pc = getInitPC(mainMem);
+    ipm.pc = getInitPC();
     Compute(&ipm);
 }

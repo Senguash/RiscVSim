@@ -43,10 +43,10 @@ void setWord(word value, word address) {
  */
 word getWord(word address){
     word temp = 0;
-    temp = temp | (((uWord)mainMem[address+3])<<BIT_PR_BYTE*3);
-    temp = temp | (((uWord)mainMem[address+2])<<BIT_PR_BYTE*2);
-    temp = temp | (((uWord)mainMem[address+1])<<BIT_PR_BYTE);
-    temp = temp | mainMem[address] & 0x000000ff;
+    temp = temp | ((((uWord)mainMem[address+3])<<(BIT_PR_BYTE*3)) & 0xff000000);
+    temp = temp | ((((uWord)mainMem[address+2])<<(BIT_PR_BYTE*2)) & 0x00ff0000);
+    temp = temp | ((((uWord)mainMem[address+1])<<(BIT_PR_BYTE*1)) & 0x0000ff00);
+    temp = temp | (mainMem[address] & 0x000000ff);
     return temp;
 }
 
@@ -70,9 +70,9 @@ void setUWord(uWord value, word address){
 uWord getUWord(word address){
     uWord temp = 0;
     temp = temp | mainMem[address] & 0x000000ff;
-    temp = temp | (((long)mainMem[address+1])<<BIT_PR_BYTE);
-    temp = temp | (((long)mainMem[address+2])<<BIT_PR_BYTE*2);
-    temp = temp | (((long)mainMem[address+3])<<BIT_PR_BYTE*3);
+    temp = temp | ((((long)mainMem[address+1])<<BIT_PR_BYTE) & 0x0000ff00);
+    temp = temp | ((((long)mainMem[address+2])<<BIT_PR_BYTE*2) & 0x00ff0000);
+    temp = temp | ((((long)mainMem[address+3])<<BIT_PR_BYTE*3) & 0xff000000);
     return temp;
 }
 
@@ -94,7 +94,7 @@ void setHWord(hWord value, word address){
 hWord getHWord(word address){
     hWord temp = 0;
     temp = temp | mainMem[address] & 0x00ff;
-    temp = temp | (((long)mainMem[address+1])<<BIT_PR_BYTE);
+    temp = temp | ((((long)mainMem[address+1])<<BIT_PR_BYTE) & 0xff00);
     return temp;
 }
 
@@ -116,7 +116,7 @@ void setUHWord(uHWord value, word address){
 uHWord getUHWord(word address){
     uHWord temp = 0;
     temp = temp | mainMem[address] & 0x00ff;
-    temp = temp | (((long)mainMem[address+1])<<BIT_PR_BYTE);
+    temp = temp | ((((long)mainMem[address+1])<<BIT_PR_BYTE) & 0xff00);
     return temp;
 }
 

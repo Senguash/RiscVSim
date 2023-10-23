@@ -6,9 +6,9 @@
 
 void Compute(InternalProcessorMemory *ipm) {
 	while (ipm->exitInvoked == 0) {
-		ipm->instruction = getWord((word)ipm->pc * 4);
+		ipm->instruction = getWord((word)ipm->pc);
 		ExecuteInstruction(ipm);
-		ipm->pc++;
+		ipm->pc += 4;
 	}
 }
 /**
