@@ -1,6 +1,6 @@
 CC=gcc
 CFLAGS=-I -v
-OBJ = main.c filereader.c memman.c processor.c
+OBJ = main.c fileReader.c memMan.c processor.c
 OUT = RiscVSim
 
 buildandrun: $(OBJ)
