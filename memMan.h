@@ -7,7 +7,7 @@
 #ifndef RISCVSIM_MENMAN_H
 #define RISCVSIM_MENMAN_H
 
-
+#include "utils.h"
 #include "types.h"
 
 void initMem();

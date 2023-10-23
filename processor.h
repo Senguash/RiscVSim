@@ -3,8 +3,8 @@
 //
 #include <stdio.h>
 #include "types.h"
-#include "main.h"
 #include "memMan.h"
+#include "utils.h"
 
 #define zero = 0;
 #define ra = 1; //Return Address
