@@ -45,6 +45,7 @@
 # Kernel Module Compile Results
 *.mod*
 *.cmd
+
 .tmp_versions/
 modules.order
 Module.symvers
@@ -54,3 +55,5 @@ dkms.conf
 /CMakeLists.txt
 /.idea/.gitignore
 /.idea/
+
+RiscVSIM
