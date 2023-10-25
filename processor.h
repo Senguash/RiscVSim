@@ -6,11 +6,8 @@
 #include "memMan.h"
 #include "utils.h"
 
-#define zero = 0;
-#define ra = 1; //Return Address
-#define sp = 2; //Stack Pointer
-#define gp = 3; //Global Pointer
-#define tp = 4; //Thread Pointer
+#ifndef PROCESSOR_H
+#define PROCESSOR_H
 
 typedef struct InternalProcessorMemory InternalProcessorMemory;
 struct InternalProcessorMemory {
@@ -22,6 +19,9 @@ struct InternalProcessorMemory {
 
 void Compute(InternalProcessorMemory *ipm);
 void ExecuteInstruction(InternalProcessorMemory *ipm);
+void PrintWordInAllFormats(word w);
+void PrintRegisters(InternalProcessorMemory* ipm);
+void ZeroOutRegisters(InternalProcessorMemory* ipm);
 
 byte GetFunct3(word instruction);
 byte GetFunct7(word instruction);
@@ -74,3 +74,5 @@ void JAL(InternalProcessorMemory *ipm);
 void JALR(InternalProcessorMemory *ipm);
 void PAUSE(InternalProcessorMemory *ipm);
 void ECALL(InternalProcessorMemory *ipm);
+
+#endif

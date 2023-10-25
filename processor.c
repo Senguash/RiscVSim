@@ -5,6 +5,8 @@
 
 
 void Compute(InternalProcessorMemory *ipm) {
+	ZeroOutRegisters(ipm);
+	ipm->exitInvoked = 0;
 	while (ipm->exitInvoked == 0) {
 		ipm->instruction = getWord((word)ipm->pc);
 		ExecuteInstruction(ipm);
@@ -68,35 +70,49 @@ void ExecuteInstruction(InternalProcessorMemory *ipm) {
 			ipm->exitInvoked = 1;
 	}
 }
+void PrintWordInAllFormats(word w) {
+	printf("dec:%-8ld hex:0x%-8x bin:0b"WORD_TO_BINARY_PATTERN"\n", w, w, WORD_TO_BINARY(w));
+}
+void PrintRegisters(InternalProcessorMemory* ipm) {
+	for (int i = 0; i < 32; i++) {
+		printf("Reg:%2d ", i);
+		PrintWordInAllFormats(ipm->registers[i]);
+	}
+}
+void ZeroOutRegisters(InternalProcessorMemory* ipm) {
+	for (int i = 0; i < 32; i++) {
+		ipm->registers[i] = 0;
+	}
+}
 /**
 Gets the 3-bit function code (additional opcode) of an instruction
  */
 byte GetFunct3(word instruction) {
-	return (byte)((instruction >> 12) & 0b0000111);
+	return (byte)(instruction >> 12) & 0b0000111;
 }
 /**
 Gets the 7-bit function code (additional opcode) of an instruction
  */
 byte GetFunct7(word instruction) {
-	return (byte)((instruction >> 25) & 0b1111111);
+	return (byte)(instruction >> 25) & 0b1111111;
 }
 /**
 Gets the index of the destination register
  */
 byte GetRD(InternalProcessorMemory *ipm) {
-	return (byte)((ipm->instruction >> 7) & 0b00011111);
+	return (byte)(ipm->instruction >> 7) & 0b00011111;
 }
 /**
 Gets the index of first source register
  */
 byte GetRS1(InternalProcessorMemory *ipm) {
-	return (byte)((ipm->instruction >> 15) & 0b00011111);
+	return (byte)(ipm->instruction >> 15) & 0b00011111;
 }
 /**
 Gets the index of second source register
  */
 byte GetRS2(InternalProcessorMemory *ipm) {
-	return (byte)((ipm->instruction >> 20) & 0b00011111);
+	return (byte)(ipm->instruction >> 20) & 0b00011111;
 }
 /**
 Gets the value of a register by index
@@ -111,8 +127,12 @@ void SetRegisterValue(byte index, word input, InternalProcessorMemory *ipm) {
 	ipm->registers[index] = input;
 }
 
-hWord GetImm11to0(word instruction) {
-	return (hWord)((instruction >> 20) & 0b111111111111);
+word GetImmediate11to0(InternalProcessorMemory* ipm) {
+	return (word)(ipm->instruction >> 20) & 0b00000000000000000000111111111111;
+}
+
+word GetUpperImmediate(InternalProcessorMemory* ipm) {
+	return (ipm->instruction >> 12) & 0b11111111111111111111;
 }
 
 void LogicalArithmetic(InternalProcessorMemory *ipm) {
@@ -291,6 +311,10 @@ void Branch(InternalProcessorMemory *ipm) {
 }
 
 void ADD(InternalProcessorMemory *ipm) {
+	//DEBUG_PRINT("RS1 "BYTE_TO_BINARY_PATTERN"\n", BYTE_TO_BINARY(GetRS1(ipm)));
+	//DEBUG_PRINT("RS1 Content: %ld\n", ipm->registers[GetRS1(ipm)]);
+	//DEBUG_PRINT("RS2 "BYTE_TO_BINARY_PATTERN"\n", BYTE_TO_BINARY(GetRS2(ipm)));
+	//DEBUG_PRINT("RS2 Content: %ld\n", ipm->registers[GetRS2(ipm)]);
 	ipm->registers[GetRD(ipm)] = ipm->registers[GetRS1(ipm)] + ipm->registers[GetRS2(ipm)];
 }
 
@@ -331,7 +355,7 @@ void AND(InternalProcessorMemory *ipm) {
 }
 
 void ADDI(InternalProcessorMemory *ipm) {
-	DEBUG_PRINT("\nNot Implemented");
+	ipm->registers[GetRD(ipm)] = ipm->registers[GetRS1(ipm)] + GetImmediate11to0(ipm);
 }
 
 void SLLI(InternalProcessorMemory *ipm) {
@@ -423,7 +447,7 @@ void BGEU(InternalProcessorMemory *ipm) {
 }
 
 void LUI(InternalProcessorMemory *ipm) {
-	DEBUG_PRINT("\nNot Implemented");
+	ipm->registers[GetRD(ipm)] = GetUpperImmediate(ipm);
 }
 
 void AUIPC(InternalProcessorMemory *ipm) {

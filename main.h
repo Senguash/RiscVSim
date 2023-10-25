@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "unitTest.h"
 #include "memMan.h"
 #include "fileReader.h"
 #include "processor.h"
