@@ -71,7 +71,7 @@ void ExecuteInstruction(InternalProcessorMemory *ipm) {
 	}
 }
 void PrintWordInAllFormats(word w) {
-	printf("dec:%-8ld hex:0x%-8x bin:0b"WORD_TO_BINARY_PATTERN"\n", w, w, WORD_TO_BINARY(w));
+	printf("dec:%-10ld hex:0x%-10x bin:"WORD_TO_BINARY_PATTERN"\n", w, w, WORD_TO_BINARY(w));
 }
 void PrintRegisters(InternalProcessorMemory* ipm) {
 	for (int i = 0; i < 32; i++) {

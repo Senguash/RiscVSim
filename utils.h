@@ -20,7 +20,7 @@
 #define DEBUG_PRINT(...)    /* Don't do anything in release builds */
 #endif
 
-#define WORD_TO_BINARY_PATTERN "%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c"
+#define WORD_TO_BINARY_PATTERN "0b %c%c%c%c%c%c%c%c %c%c%c%c%c%c%c%c %c%c%c%c%c%c%c%c %c%c%c%c%c%c%c%c"
 #define WORD_TO_BINARY(word)  \
   ((word) & 0x80000000 ? '1' : '0'), \
   ((word) & 0x40000000 ? '1' : '0'), \
