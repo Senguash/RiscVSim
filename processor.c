@@ -323,7 +323,7 @@ void SUB(InternalProcessorMemory *ipm) {
 }
 
 void SLL(InternalProcessorMemory *ipm) {
-	DEBUG_PRINT("\nNot Implemented");
+	ipm->registers[GetRD(ipm)] = ipm->registers[GetRS1(ipm)] << ipm->registers[GetRS2(ipm)];
 }
 
 void SLT(InternalProcessorMemory *ipm) {

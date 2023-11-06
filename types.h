@@ -5,12 +5,14 @@
 #ifndef RISCVSIM_TYPES_H
 #define RISCVSIM_TYPES_H
 
-typedef long word;
-typedef int hWord;
-typedef char byte;
-typedef unsigned long uWord;
-typedef unsigned int uHWord;
-typedef unsigned char uByte;
+#include <stdint.h>
+
+typedef int32_t word;
+typedef int16_t hWord;
+typedef int8_t byte;
+typedef uint32_t uWord;
+typedef uint16_t uHWord;
+typedef uint8_t uByte;
 
 #define BIT_PR_BYTE 8
 #define MAIN_MEM_SIZE 1000000

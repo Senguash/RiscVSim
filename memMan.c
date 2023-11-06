@@ -20,7 +20,7 @@ void initMem() {
  * @return word PC
  */
 word getInitPC(){
-    DEBUG_PRINT("Getting initial PC is not implemented\n");
+    DEBUG_PRINT("Getting initial PC is not implemented, for now it is just 0\n");
     return 0;
 }
 
