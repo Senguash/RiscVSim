@@ -14,7 +14,7 @@ Add a unit test by creating a function, and then adding an entry in one of test 
 int Mem_word_uTest() {
     word w = RandW();
     DEBUG_PRINT("w: %ld\n", w);
-    word address = RandW();
+    word address = RandUW();
     DEBUG_PRINT("address: %ld\n", address);
     setWord(w, address);
     word result = getWord(address);
@@ -24,7 +24,7 @@ int Mem_word_uTest() {
 int Mem_hWord_uTest() {
     hWord hW = RandHW();
     DEBUG_PRINT("hW: %d\n", hW);
-    word address = RandW();
+    word address = RandUW();
     DEBUG_PRINT("address: %ld\n", address);
     setHWord(hW, address);
     hWord result = getHWord(address);
@@ -34,7 +34,7 @@ int Mem_hWord_uTest() {
 int Mem_byte_uTest() {
     byte b = RandB();
     DEBUG_PRINT("b: %d\n", b);
-    word address = RandW();
+    word address = RandUW();
     DEBUG_PRINT("address: %ld\n", address);
     setByte(b, address);
     byte result = getByte(address);
@@ -44,7 +44,7 @@ int Mem_byte_uTest() {
 int Mem_uWord_uTest() {
     uWord uw = RandUW();
     DEBUG_PRINT("uw: %ld\n", uw);
-    word address = RandW();
+    word address = RandUW();
     DEBUG_PRINT("address: %ld\n", address);
     setUWord(uw, address);
     uWord result = getUWord(address);
@@ -54,7 +54,7 @@ int Mem_uWord_uTest() {
 int Mem_uHWord_uTest() {
     uHWord uhw = RandUHW();
     DEBUG_PRINT("uhw: %d\n", uhw);
-    word address = RandW();
+    word address = RandUW();
     DEBUG_PRINT("address: %ld\n", address);
     setUHWord(uhw, address);
     uHWord result = getUHWord(address);
@@ -64,7 +64,7 @@ int Mem_uHWord_uTest() {
 int Mem_uByte_uTest() {
     uByte ub = RandUB();
     DEBUG_PRINT("ub: %d\n", ub);
-    word address = RandW();
+    word address = RandUW();
     DEBUG_PRINT("address: %ld\n", address);
     setUByte(ub, address);
     uByte result = getUByte(address);
