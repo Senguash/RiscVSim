@@ -1,8 +1,6 @@
 #include "main.h"
 
 int main(int argc, char* argv[]){
-
-    
     /*char cwd[256];
     if (getcwd(cwd, sizeof(cwd)) != NULL) {
         printf("Current working dir: %s\n", cwd);
