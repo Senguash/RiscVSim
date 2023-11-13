@@ -20,6 +20,7 @@ struct InternalProcessorMemory {
 void Compute(InternalProcessorMemory *ipm);
 void ExecuteInstruction(InternalProcessorMemory *ipm);
 void PrintWordInAllFormats(word w);
+void DebugPrintWord(word w);
 void PrintRegisters(InternalProcessorMemory* ipm);
 void ZeroOutRegisters(InternalProcessorMemory* ipm);
 

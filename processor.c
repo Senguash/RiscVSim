@@ -72,7 +72,10 @@ void ExecuteInstruction(InternalProcessorMemory *ipm) {
 	}
 }
 void PrintWordInAllFormats(word w) {
-	printf("dec:%-10ld hex:0x%-10x bin:"WORD_TO_BINARY_PATTERN"\n", w, w, WORD_TO_BINARY(w));
+	printf("dec:%-10d hex:0x%-10x bin:"WORD_TO_BINARY_PATTERN"\n", w, w, WORD_TO_BINARY(w));
+}
+void DebugPrintWord(word w) {
+	DEBUG_PRINT("dec:%-10d hex:0x%-10x bin:"WORD_TO_BINARY_PATTERN"\n", w, w, WORD_TO_BINARY(w));
 }
 void PrintRegisters(InternalProcessorMemory* ipm) {
 	for (int i = 0; i < 32; i++) {
@@ -313,9 +316,9 @@ void Branch(InternalProcessorMemory *ipm) {
 
 void ADD(InternalProcessorMemory *ipm) {
 	//DEBUG_PRINT("RS1 "BYTE_TO_BINARY_PATTERN"\n", BYTE_TO_BINARY(GetRS1(ipm)));
-	//DEBUG_PRINT("RS1 Content: %ld\n", ipm->registers[GetRS1(ipm)]);
+	//DEBUG_PRINT("RS1 Content: %d\n", ipm->registers[GetRS1(ipm)]);
 	//DEBUG_PRINT("RS2 "BYTE_TO_BINARY_PATTERN"\n", BYTE_TO_BINARY(GetRS2(ipm)));
-	//DEBUG_PRINT("RS2 Content: %ld\n", ipm->registers[GetRS2(ipm)]);
+	//DEBUG_PRINT("RS2 Content: %d\n", ipm->registers[GetRS2(ipm)]);
 	ipm->registers[GetRD(ipm)] = ipm->registers[GetRS1(ipm)] + ipm->registers[GetRS2(ipm)];
 }
 
@@ -367,7 +370,7 @@ void SLLI(InternalProcessorMemory *ipm) {
 }
 
 void SLTI(InternalProcessorMemory *ipm) {
-	DEBUG_PRINT("\nNot Implemented");
+	ipm->registers[GetRD(ipm)] = ipm->registers[GetRS1(ipm)] < GetImmediate11to0(ipm);
 }
 
 void SLTIU(InternalProcessorMemory *ipm) {

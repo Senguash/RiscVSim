@@ -18,5 +18,5 @@ int main(int argc, char* argv[]){
     InternalProcessorMemory ipm;
     ipm.pc = getInitPC();
     Compute(&ipm);
-//    PrintRegisters(&ipm);
+    //PrintRegisters(&ipm);
 }

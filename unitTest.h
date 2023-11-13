@@ -18,7 +18,7 @@ int Mem_word_uTest() {
     DEBUG_PRINT("address: %d\n", address);
     setWord(w, address);
     word result = getWord(address);
-    DEBUG_PRINT("return w: %ld\n", result);
+    DEBUG_PRINT("return w: %d\n", result);
     return Assert_Equal(w, result);
 }
 
@@ -134,13 +134,18 @@ int SLL_uTest(){
     ipm.instruction = 0b00000000110101100001010110110011;  //sll  a1 , a2 , a3
     word temp = ipm.registers[a2] << ipm.registers[a3];
     SLL(&ipm);
+<<<<<<< HEAD
     DEBUG_PRINT("a1 = a2 << a3   a2: %ld  a3: %ld\n",ipm.registers[a2],ipm.registers[a3]);
+=======
+    DEBUG_PRINT("a1 = a2 << a3   a2: %d  a3: %d\n",ipm.registers[a2],ipm.registers[a3]);
+>>>>>>> 855f818 (added SLTI)
     DEBUG_PRINT("a1: %d\n", ipm.registers[a1]);
     word temp = ipm.registers[a2] << ipm.registers[a3];
     return Assert_Equal(temp, ipm.registers[a1]);
 
 }
 
+<<<<<<< HEAD
 int SLT_uTest(){
     InternalProcessorMemory ipm;
     word rand1 = RandW();
@@ -168,6 +173,22 @@ int SRA_uTest() {
 }
 
 
+=======
+int SLTI_uTest(){
+    InternalProcessorMemory ipm;
+    ipm.instruction = 0b00000011001000111010001100010011; //slti t1, t2, 50
+    word randWord = (RandW()%100);
+    DEBUG_PRINT("randWord: ");
+    DebugPrintWord(randWord);
+    word result = (randWord < 50);
+    DEBUG_PRINT("result: %d\n", result);
+    ipm.registers[t2] = randWord;
+    SLTI(&ipm);
+    DEBUG_PRINT("t1: %d\n", ipm.registers[t1]);
+    return Assert_Equal(result, ipm.registers[t1]);
+}
+
+>>>>>>> 855f818 (added SLTI)
 void MemoryTestSuite() {
     Test tests[] = {
     CreateTest(&Mem_word_uTest, "Mem word test"),
@@ -190,8 +211,12 @@ void InstructionSetTestSuite() {
     CreateTest(&ADDI_uTest, "ADDI test"),
     CreateTest(&LUI_uTest, "LUI test"),
     CreateTest(&SLL_uTest, "SLL test"),
+<<<<<<< HEAD
     CreateTest(&SLT_uTest, "SLT test"),
     CreateTest(&SRA_uTest, "SRA test")
+=======
+    CreateTest(&SLTI_uTest, "SLTI test")
+>>>>>>> 855f818 (added SLTI)
     };
 
     for (int i = 0; i < (sizeof(tests) / sizeof(tests[0])); i++) {
