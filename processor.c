@@ -107,7 +107,7 @@ byte GetRD(InternalProcessorMemory *ipm) {
 Gets the index of first source register
  */
 byte GetRS1(InternalProcessorMemory *ipm) {
-	return (byte)(ipm->instruction >> 15) & 0b00011111;
+	return ((byte)(ipm->instruction >> 15)) & 0b00011111;
 }
 /**
 Gets the index of second source register
@@ -344,7 +344,10 @@ void SRL(InternalProcessorMemory *ipm) {
 }
 
 void SRA(InternalProcessorMemory *ipm) {
-	DEBUG_PRINT("\nNot Implemented");
+    word a1t = ipm->registers[GetRS1(ipm)];
+    word a2t = ipm->registers[GetRS2(ipm)];
+    word ret = (word)(a1t>>a2t);
+	ipm->registers[GetRD(ipm)] = ret;
 }
 
 void OR(InternalProcessorMemory *ipm) {

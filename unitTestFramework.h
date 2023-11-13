@@ -49,7 +49,10 @@ Test CreateTest(int (*funct_ptr)(), char* testName) {
 Gets a randomized word
  */
 word RandW() {
-    return (word) (rand() % 65536) - 32768;
+    int r = rand();
+    int mod = r % 65536;
+    int min = mod - 32768;
+    return (word) min;
 }
 /**
 Gets a randomized hWord

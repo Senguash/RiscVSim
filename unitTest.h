@@ -132,13 +132,27 @@ int SLL_uTest(){
     ipm.registers[a2] = RandW();
     ipm.registers[a3] = (rand()%31)+1;
     ipm.instruction = 0b00000000110101100001010110110011;  //sll  a1 , a2 , a3
+    word temp = ipm.registers[a2] << ipm.registers[a3];
     SLL(&ipm);
     DEBUG_PRINT("a1 = a2 << a3   a2: %ld  a3: %ld\n",ipm.registers[a2],ipm.registers[a3]);
     DEBUG_PRINT("a1: %ld\n", ipm.registers[a1]);
-    word temp = ipm.registers[a2] << ipm.registers[a3];
     return Assert_Equal(temp, ipm.registers[a1]);
 
 }
+
+int SRA_uTest() {
+    InternalProcessorMemory ipm;
+    ipm.registers[a1] = RandW();
+    ipm.registers[a2] = (rand() % 31) + 1;
+    word ins = 0b01000000110001011101010100110011;
+    ipm.instruction = ins; //sra  a0 , a1 , a2
+    word temp = ipm.registers[a1] >> ipm.registers[a2];
+    SRA(&ipm);
+    DEBUG_PRINT("a0 = a1 >> a2   a1: %ld  a2: %ld\n", ipm.registers[a1], ipm.registers[a2]);
+    DEBUG_PRINT("a0: %ld\n", ipm.registers[a0]);
+    return Assert_Equal(temp, ipm.registers[a0]);
+}
+
 
 void MemoryTestSuite() {
     Test tests[] = {
@@ -161,7 +175,8 @@ void InstructionSetTestSuite() {
     CreateTest(&SUB_uTest, "SUB test"),
     CreateTest(&ADDI_uTest, "ADDI test"),
     CreateTest(&LUI_uTest, "LUI test"),
-    CreateTest(&SLL_uTest, "SLL test")
+    CreateTest(&SLL_uTest, "SLL test"),
+    CreateTest(&SRA_uTest, "SRA test")
     };
 
     for (int i = 0; i < (sizeof(tests) / sizeof(tests[0])); i++) {
