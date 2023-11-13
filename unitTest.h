@@ -13,9 +13,9 @@ Add a unit test by creating a function, and then adding an entry in one of test 
 
 int Mem_word_uTest() {
     word w = RandW();
-    DEBUG_PRINT("w: %ld\n", w);
+    DEBUG_PRINT("w: %d\n", w);
     word address = RandUW();
-    DEBUG_PRINT("address: %ld\n", address);
+    DEBUG_PRINT("address: %d\n", address);
     setWord(w, address);
     word result = getWord(address);
     DEBUG_PRINT("return w: %ld\n", result);
@@ -26,7 +26,7 @@ int Mem_hWord_uTest() {
     hWord hW = RandHW();
     DEBUG_PRINT("hW: %d\n", hW);
     word address = RandUW();
-    DEBUG_PRINT("address: %ld\n", address);
+    DEBUG_PRINT("address: %d\n", address);
     setHWord(hW, address);
     hWord result = getHWord(address);
     DEBUG_PRINT("return w: %d\n", result);
@@ -37,7 +37,7 @@ int Mem_byte_uTest() {
     byte b = RandB();
     DEBUG_PRINT("b: %d\n", b);
     word address = RandUW();
-    DEBUG_PRINT("address: %ld\n", address);
+    DEBUG_PRINT("address: %d\n", address);
     setByte(b, address);
     byte result = getByte(address);
     DEBUG_PRINT("return w: %d\n", result);
@@ -46,9 +46,9 @@ int Mem_byte_uTest() {
 
 int Mem_uWord_uTest() {
     uWord uw = RandUW();
-    DEBUG_PRINT("uw: %ld\n", uw);
+    DEBUG_PRINT("uw: %d\n", uw);
     word address = RandUW();
-    DEBUG_PRINT("address: %ld\n", address);
+    DEBUG_PRINT("address: %d\n", address);
     setUWord(uw, address);
     uWord result = getUWord(address);
     return Assert_Equal(uw, result);
@@ -58,7 +58,7 @@ int Mem_uHWord_uTest() {
     uHWord uhw = RandUHW();
     DEBUG_PRINT("uhw: %d\n", uhw);
     word address = RandUW();
-    DEBUG_PRINT("address: %ld\n", address);
+    DEBUG_PRINT("address: %d\n", address);
     setUHWord(uhw, address);
     uHWord result = getUHWord(address);
     return Assert_Equal(uhw, result);
@@ -68,7 +68,7 @@ int Mem_uByte_uTest() {
     uByte ub = RandUB();
     DEBUG_PRINT("ub: %d\n", ub);
     word address = RandUW();
-    DEBUG_PRINT("address: %ld\n", address);
+    DEBUG_PRINT("address: %d\n", address);
     setUByte(ub, address);
     uByte result = getUByte(address);
     return Assert_Equal(ub, result);
@@ -78,15 +78,15 @@ int ADD_uTest() {
     InternalProcessorMemory ipm;
     ipm.instruction = 0b00000000011100110000001010110011; //add t0, t1, t2
     word int1 = RandW();
-    DEBUG_PRINT("int1: %ld\n", int1);
+    DEBUG_PRINT("int1: %d\n", int1);
     word int2 = RandW();
-    DEBUG_PRINT("int2: %ld\n", int2);
+    DEBUG_PRINT("int2: %d\n", int2);
     word sum = (int1 + int2);
-    DEBUG_PRINT("sum: %ld\n", sum);
+    DEBUG_PRINT("sum: %d\n", sum);
     ipm.registers[t1] = int1;
     ipm.registers[t2] = int2;
     ADD(&ipm);
-    DEBUG_PRINT("t0: %ld\n", ipm.registers[t0]);
+    DEBUG_PRINT("t0: %d\n", ipm.registers[t0]);
     return Assert_Equal(sum, ipm.registers[t0]);
 }
 
@@ -94,15 +94,15 @@ int SUB_uTest() {
     InternalProcessorMemory ipm;
     ipm.instruction = 0b01000000011100110000001010110011; //sub t0, t1, t2
     word int1 = RandW();
-    DEBUG_PRINT("int1: %ld\n", int1);
+    DEBUG_PRINT("int1: %d\n", int1);
     word int2 = RandW();
-    DEBUG_PRINT("int2: %ld\n", int2);
+    DEBUG_PRINT("int2: %d\n", int2);
     word result = (int1 - int2);
-    DEBUG_PRINT("result: %ld\n", result);
+    DEBUG_PRINT("result: %d\n", result);
     ipm.registers[t1] = int1;
     ipm.registers[t2] = int2;
     SUB(&ipm);
-    DEBUG_PRINT("t0: %ld\n", ipm.registers[t0]);
+    DEBUG_PRINT("t0: %d\n", ipm.registers[t0]);
     return Assert_Equal(result, ipm.registers[t0]);
 }
 
@@ -110,12 +110,12 @@ int ADDI_uTest() {
     InternalProcessorMemory ipm;
     ipm.instruction = 0b00001000100100110000001010010011; //addi t0, t1, 137
     word int1 = RandW();
-    DEBUG_PRINT("int1: %ld\n", int1);
+    DEBUG_PRINT("int1: %d\n", int1);
     word sum = (int1 + 137);
-    DEBUG_PRINT("sum: %ld\n", sum);
+    DEBUG_PRINT("sum: %d\n", sum);
     ipm.registers[t1] = int1;
     ADDI(&ipm);
-    DEBUG_PRINT("t0: %ld\n", ipm.registers[t0]);
+    DEBUG_PRINT("t0: %d\n", ipm.registers[t0]);
     return Assert_Equal(sum, ipm.registers[t0]);
 }
 
@@ -123,7 +123,7 @@ int LUI_uTest() {
     InternalProcessorMemory ipm;
     ipm.instruction = 0b00000000000010001001001010110111; //lui t0, 137
     LUI(&ipm);
-    DEBUG_PRINT("t0: %ld\n", ipm.registers[t0]);
+    DEBUG_PRINT("t0: %d\n", ipm.registers[t0]);
     return Assert_Equal(137, ipm.registers[t0]);
 }
 
@@ -135,9 +135,23 @@ int SLL_uTest(){
     word temp = ipm.registers[a2] << ipm.registers[a3];
     SLL(&ipm);
     DEBUG_PRINT("a1 = a2 << a3   a2: %ld  a3: %ld\n",ipm.registers[a2],ipm.registers[a3]);
-    DEBUG_PRINT("a1: %ld\n", ipm.registers[a1]);
+    DEBUG_PRINT("a1: %d\n", ipm.registers[a1]);
+    word temp = ipm.registers[a2] << ipm.registers[a3];
     return Assert_Equal(temp, ipm.registers[a1]);
 
+}
+
+int SLT_uTest(){
+    InternalProcessorMemory ipm;
+    word rand1 = RandW();
+    word rand2 = RandW();
+    ipm.registers[t1] = rand1;
+    ipm.registers[t2] = rand2;
+    ipm.instruction = 0b00000000011100110010010100110011;//    slt a0,t1,t2
+    SLT(&ipm);
+    word result = rand1 < rand2;
+    DEBUG_PRINT("int1: %d\nint2: %d\nres: %d\nA0:%d\n",rand1,rand2,result,ipm.registers[a0]);
+    return Assert_Equal(result,ipm.registers[a0]);
 }
 
 int SRA_uTest() {
@@ -176,6 +190,7 @@ void InstructionSetTestSuite() {
     CreateTest(&ADDI_uTest, "ADDI test"),
     CreateTest(&LUI_uTest, "LUI test"),
     CreateTest(&SLL_uTest, "SLL test"),
+    CreateTest(&SLT_uTest, "SLT test"),
     CreateTest(&SRA_uTest, "SRA test")
     };
 

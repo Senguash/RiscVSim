@@ -49,22 +49,19 @@ Test CreateTest(int (*funct_ptr)(), char* testName) {
 Gets a randomized word
  */
 word RandW() {
-    int r = rand();
-    int mod = r % 65536;
-    int min = mod - 32768;
-    return (word) min;
+    return (word) (rand() % 65536)-32768;
 }
 /**
 Gets a randomized hWord
  */
 hWord RandHW() {
-    return (hWord) (rand() % 65536) - 32768;
+    return (hWord) (rand() % 65536)-32768;
 }
 /**
 Gets a randomized byte
  */
 byte RandB() {
-    return (byte) (rand() % 65536) - 32768;
+    return (byte) (rand() % 65536)-32768;
 }
 /**
 Gets a randomized uWord
