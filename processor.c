@@ -42,27 +42,27 @@ void ExecuteInstruction(InternalProcessorMemory *ipm) {
 			Branch(ipm);
 			break;
 		case (0b0110111):
-			DEBUG_PRINT("\nLUI");
+			DEBUG_PRINT("LUI\n");
 			LUI(ipm);
 			break;
 		case (0b0010111):
-			DEBUG_PRINT("\nAUIPC");
+			DEBUG_PRINT("AUIPC\n");
 			AUIPC(ipm);
 			break;
 		case (0b1101111):
-			DEBUG_PRINT("\nJAL");
+			DEBUG_PRINT("JAL\n");
 			JAL(ipm);
 			break;
 		case (0b1100111):
-			DEBUG_PRINT("\nJALR");
+			DEBUG_PRINT("JALR\n");
 			JALR(ipm);
 			break;
 		case (0b0000111):
-			DEBUG_PRINT("\nPAUSE");
+			DEBUG_PRINT("PAUSE\n");
 			PAUSE(ipm);
 			break;
 		case (0b1110011):
-			DEBUG_PRINT("\nECALL");
+			DEBUG_PRINT("ECALL\n");
 			ECALL(ipm);
 			break;
 		default:
@@ -141,52 +141,52 @@ void LogicalArithmetic(InternalProcessorMemory *ipm) {
 		{
 			switch (GetFunct7(ipm->instruction)) {
 			case (0b0000000):
-				DEBUG_PRINT("\nADD");
+				DEBUG_PRINT("ADD\n");
 				ADD(ipm);
 				break;
 			case (0b0100000):
-				DEBUG_PRINT("\nSUB");
+				DEBUG_PRINT("SUB\n");
 				SUB(ipm);
 				break;
 			}
 		}
 		break;
 	case (0b001):
-		DEBUG_PRINT("\nSLL");
+		DEBUG_PRINT("SLL\n");
 		SLL(ipm);
 		break;
 	case (0b010):
-		DEBUG_PRINT("\nSLT");
+		DEBUG_PRINT("SLT\n");
 		SLT(ipm);
 		break;
 	case (0b011):
-		DEBUG_PRINT("\nSLTU");
+		DEBUG_PRINT("SLTU\n");
 		SLTU(ipm);
 		break;
 	case (0b100):
-		DEBUG_PRINT("\nXOR");
+		DEBUG_PRINT("XOR\n");
 		XOR(ipm);
 		break;
 	case (0b101):
 	{
 		switch (GetFunct7(ipm->instruction)) {
 		case (0b0000000):
-			DEBUG_PRINT("\nSRL");
+			DEBUG_PRINT("SRL\n");
 			SRL(ipm);
 			break;
 		case (0b0100000):
-			DEBUG_PRINT("\nSRA");
+			DEBUG_PRINT("SRA\n");
 			SRA(ipm);
 			break;
 		}
 	}
 		break;
 	case (0b110):
-		DEBUG_PRINT("\nOR");
+		DEBUG_PRINT("OR\n");
 		OR(ipm);
 		break;
 	case (0b111):
-		DEBUG_PRINT("\nAND");
+		DEBUG_PRINT("AND\n");
 		AND(ipm);
 		break;
 	}
@@ -195,45 +195,45 @@ void LogicalArithmetic(InternalProcessorMemory *ipm) {
 void LogicalArithmeticImmediate(InternalProcessorMemory *ipm) {
 	switch (GetFunct3(ipm->instruction)) {
 	case (0b000):
-		DEBUG_PRINT("\nADDI");
+		DEBUG_PRINT("ADDI\n");
 		ADDI(ipm);
 		break;
 	case (0b001):
-		DEBUG_PRINT("\nSLLI");
+		DEBUG_PRINT("SLLI\n");
 		SLLI(ipm);
 		break;
 	case (0b010):
-		DEBUG_PRINT("\nSLTI");
+		DEBUG_PRINT("SLTI\n");
 		SLTI(ipm);
 		break;
 	case (0b011):
-		DEBUG_PRINT("\nSLTIU");
+		DEBUG_PRINT("SLTIU\n");
 		SLTIU(ipm);
 		break;
 	case (0b100):
-		DEBUG_PRINT("\nXORI");
+		DEBUG_PRINT("XORI\n");
 		XORI(ipm);
 		break;
 	case (0b101):
 	{
 		switch (GetFunct7(ipm->instruction)) {
 		case (0b0000000):
-			DEBUG_PRINT("\nSRLI");
+			DEBUG_PRINT("SRLI\n");
 			SRLI(ipm);
 			break;
 		case (0b0100000):
-			DEBUG_PRINT("\nSRAI");
+			DEBUG_PRINT("SRAI\n");
 			SRAI(ipm);
 			break;
 		}
 	}
 	break;
 	case (0b110):
-		DEBUG_PRINT("\nORI");
+		DEBUG_PRINT("ORI\n");
 		ORI(ipm);
 		break;
 	case (0b111):
-		DEBUG_PRINT("\nANDI");
+		DEBUG_PRINT("ANDI\n");
 		ANDI(ipm);
 		break;
 	}
@@ -242,23 +242,23 @@ void LogicalArithmeticImmediate(InternalProcessorMemory *ipm) {
 void Load(InternalProcessorMemory *ipm) {
 	switch (GetFunct3(ipm->instruction)) {
 	case (0b000):
-		DEBUG_PRINT("\nLB");
+		DEBUG_PRINT("LB\n");
 		LB(ipm);
 		break;
 	case (0b001):
-		DEBUG_PRINT("\nLH");
+		DEBUG_PRINT("LH\n");
 		LH(ipm);
 		break;
 	case (0b010):
-		DEBUG_PRINT("\nLW");
+		DEBUG_PRINT("LW\n");
 		LW(ipm);
 		break;
 	case (0b100):
-		DEBUG_PRINT("\nLBU");
+		DEBUG_PRINT("LBU\n");
 		LBU(ipm);
 		break;
 	case (0b101):
-		DEBUG_PRINT("\nLHU");
+		DEBUG_PRINT("LHU\n");
 		LHU(ipm);
 		break;
 	}
@@ -267,15 +267,15 @@ void Load(InternalProcessorMemory *ipm) {
 void Store(InternalProcessorMemory *ipm) {
 	switch (GetFunct3(ipm->instruction)) {
 	case (0b000):
-		DEBUG_PRINT("\nSB");
+		DEBUG_PRINT("SB\n");
 		SB(ipm);
 		break;
 	case (0b001):
-		DEBUG_PRINT("\nSH");
+		DEBUG_PRINT("SH\n");
 		SH(ipm);
 		break;
 	case (0b010):
-		DEBUG_PRINT("\nSW");
+		DEBUG_PRINT("SW\n");
 		SW(ipm);
 		break;
 	}
@@ -284,27 +284,27 @@ void Store(InternalProcessorMemory *ipm) {
 void Branch(InternalProcessorMemory *ipm) {
 	switch (GetFunct3(ipm->instruction)) {
 	case (0b000):
-		DEBUG_PRINT("\nBEQ");
+		DEBUG_PRINT("BEQ\n");
 		BEQ(ipm);
 		break;
 	case (0b001):
-		DEBUG_PRINT("\nBNE");
+		DEBUG_PRINT("BNE\n");
 		BNE(ipm);
 		break;
 	case (0b100):
-		DEBUG_PRINT("\nBLT");
+		DEBUG_PRINT("BLT\n");
 		BLT(ipm);
 		break;
 	case (0b101):
-		DEBUG_PRINT("\nBGE");
+		DEBUG_PRINT("BGE\n");
 		BGE(ipm);
 		break;
 	case (0b110):
-		DEBUG_PRINT("\nBLTU");
+		DEBUG_PRINT("BLTU\n");
 		BLTU(ipm);
 		break;
 	case (0b111):
-		DEBUG_PRINT("\nBGEU");
+		DEBUG_PRINT("BGEU\n");
 		BGEU(ipm);
 		break;
 	}
