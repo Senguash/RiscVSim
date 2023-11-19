@@ -335,15 +335,15 @@ void SLT(InternalProcessorMemory *ipm) {
 }
 
 void SLTU(InternalProcessorMemory *ipm) {
-	DEBUG_PRINT("\nNot Implemented");
+	DEBUG_PRINT("Not Implemented\n");
 }
 
 void XOR(InternalProcessorMemory *ipm) {
-	DEBUG_PRINT("\nNot Implemented");
+	DEBUG_PRINT("Not Implemented\n");
 }
 
 void SRL(InternalProcessorMemory *ipm) {
-	DEBUG_PRINT("\nNot Implemented");
+	DEBUG_PRINT("Not Implemented\n");
 }
 
 void SRA(InternalProcessorMemory *ipm) {
@@ -354,11 +354,11 @@ void SRA(InternalProcessorMemory *ipm) {
 }
 
 void OR(InternalProcessorMemory *ipm) {
-	DEBUG_PRINT("\nNot Implemented");
+	DEBUG_PRINT("Not Implemented\n");
 }
 
 void AND(InternalProcessorMemory *ipm) {
-	DEBUG_PRINT("\nNot Implemented");
+	DEBUG_PRINT("Not Implemented\n");
 }
 
 void ADDI(InternalProcessorMemory *ipm) {
@@ -366,7 +366,7 @@ void ADDI(InternalProcessorMemory *ipm) {
 }
 
 void SLLI(InternalProcessorMemory *ipm) {
-	DEBUG_PRINT("\nNot Implemented");
+	DEBUG_PRINT("Not Implemented\n");
 }
 
 void SLTI(InternalProcessorMemory *ipm) {
@@ -374,83 +374,83 @@ void SLTI(InternalProcessorMemory *ipm) {
 }
 
 void SLTIU(InternalProcessorMemory *ipm) {
-	DEBUG_PRINT("\nNot Implemented");
+	DEBUG_PRINT("Not Implemented\n");
 }
 
 void XORI(InternalProcessorMemory *ipm) {
-	DEBUG_PRINT("\nNot Implemented");
+	DEBUG_PRINT("Not Implemented\n");
 }
 
 void SRLI(InternalProcessorMemory *ipm) {
-	DEBUG_PRINT("\nNot Implemented");
+	DEBUG_PRINT("Not Implemented\n");
 }
 
 void SRAI(InternalProcessorMemory *ipm) {
-	DEBUG_PRINT("\nNot Implemented");
+	DEBUG_PRINT("Not Implemented\n");
 }
 
 void ORI(InternalProcessorMemory *ipm) {
-	DEBUG_PRINT("\nNot Implemented");
+	DEBUG_PRINT("Not Implemented\n");
 }
 
 void ANDI(InternalProcessorMemory *ipm) {
-	DEBUG_PRINT("\nNot Implemented");
+	DEBUG_PRINT("Not Implemented\n");
 }
 
 void LB(InternalProcessorMemory *ipm) {
-	DEBUG_PRINT("\nNot Implemented");
+	DEBUG_PRINT("Not Implemented\n");
 }
 
 void LH(InternalProcessorMemory *ipm) {
-	DEBUG_PRINT("\nNot Implemented");
+	DEBUG_PRINT("Not Implemented\n");
 }
 
 void LW(InternalProcessorMemory *ipm) {
-	DEBUG_PRINT("\nNot Implemented");
+	DEBUG_PRINT("Not Implemented\n");
 }
 
 void LBU(InternalProcessorMemory *ipm) {
-	DEBUG_PRINT("\nNot Implemented");
+	DEBUG_PRINT("Not Implemented\n");
 }
 
 void LHU(InternalProcessorMemory *ipm) {
-	DEBUG_PRINT("\nNot Implemented");
+	DEBUG_PRINT("Not Implemented\n");
 }
 
 void SB(InternalProcessorMemory *ipm) {
-	DEBUG_PRINT("\nNot Implemented");
+	DEBUG_PRINT("Not Implemented\n");
 }
 
 void SH(InternalProcessorMemory *ipm) {
-	DEBUG_PRINT("\nNot Implemented");
+	DEBUG_PRINT("Not Implemented\n");
 }
 
 void SW(InternalProcessorMemory *ipm) {
-	DEBUG_PRINT("\nNot Implemented");
+	DEBUG_PRINT("Not Implemented\n");
 }
 
 void BEQ(InternalProcessorMemory *ipm) {
-	DEBUG_PRINT("\nNot Implemented");
+	DEBUG_PRINT("Not Implemented\n");
 }
 
 void BNE(InternalProcessorMemory *ipm) {
-	DEBUG_PRINT("\nNot Implemented");
+	DEBUG_PRINT("Not Implemented\n");
 }
 
 void BLT(InternalProcessorMemory *ipm) {
-	DEBUG_PRINT("\nNot Implemented");
+	DEBUG_PRINT("Not Implemented\n");
 }
 
 void BGE(InternalProcessorMemory *ipm) {
-	DEBUG_PRINT("\nNot Implemented");
+	DEBUG_PRINT("Not Implemented\n");
 }
 
 void BLTU(InternalProcessorMemory *ipm) {
-	DEBUG_PRINT("\nNot Implemented");
+	DEBUG_PRINT("Not Implemented\n");
 }
 
 void BGEU(InternalProcessorMemory *ipm) {
-	DEBUG_PRINT("\nNot Implemented");
+	DEBUG_PRINT("Not Implemented\n");
 }
 
 void LUI(InternalProcessorMemory *ipm) {
@@ -458,21 +458,71 @@ void LUI(InternalProcessorMemory *ipm) {
 }
 
 void AUIPC(InternalProcessorMemory *ipm) {
-	DEBUG_PRINT("\nNot Implemented");
+	DEBUG_PRINT("Not Implemented\n");
 }
 
 void JAL(InternalProcessorMemory *ipm) {
-	DEBUG_PRINT("\nNot Implemented");
+	DEBUG_PRINT("Not Implemented\n");
 }
 
 void JALR(InternalProcessorMemory *ipm) {
-	DEBUG_PRINT("\nNot Implemented");
+	DEBUG_PRINT("Not Implemented\n");
 }
 
 void PAUSE(InternalProcessorMemory *ipm) {
-	DEBUG_PRINT("\nNot Implemented");
+	DEBUG_PRINT("Not Implemented\n");
 }
 
 void ECALL(InternalProcessorMemory *ipm) {
-	DEBUG_PRINT("\nNot Implemented");
+	//DEBUG_PRINT("Value of a7: %d\n", ipm->registers[a7]);
+	//DEBUG_PRINT("Value of funct7: %d\n", GetFunct7(ipm));
+	switch (ipm->registers[a7]) {
+		case 1: //PrintInt
+		{
+			printf("%" PRIi32"\n", ipm->registers[a0]);
+		}
+		break;
+		case 2: //PrintFloat
+		{
+			float* ptr = &ipm->registers[a0];
+			double d = (double)*ptr;
+			printf("%f\n", d);
+		}
+		break;
+		case 4: //PrintString
+		{
+			word address = ipm->registers[a0];
+			byte c = getByte(address);
+			//DEBUG_PRINT(" "BYTE_TO_BINARY_PATTERN, BYTE_TO_BINARY(c));
+			while (c != 0) 
+			{
+				printf("%c", c);
+				
+				if (address % 4 == 3) {
+					address-=7;
+				}
+				else {
+					address++;
+				}
+				c = getByte(address);
+			}
+			printf("\n");
+		}
+		break;
+		case 10: //Exit
+		{
+			ipm->exitInvoked = 1;
+		}
+		break;
+		case 11: //PrintChar
+		{
+			printf("%c", ipm->registers[a0]);
+		}
+		break;
+		case 17: //GetCWD
+		{
+
+		}
+		break;
+	}
 }

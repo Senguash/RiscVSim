@@ -5,6 +5,7 @@
 #include "types.h"
 #include "memMan.h"
 #include "utils.h"
+#include <inttypes.h>
 
 #ifndef PROCESSOR_H
 #define PROCESSOR_H

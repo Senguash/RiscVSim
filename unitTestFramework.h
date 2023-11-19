@@ -27,6 +27,7 @@ void ThrowException(char* message) {
 };
 
 void ExecuteTest(Test test) {
+    DEBUG_PRINT("RUNNING: %s\n", test.name);
     int testResult = test.test_funct_ptr();
     if (testResult == 1) {
         TestPassed(test.name);

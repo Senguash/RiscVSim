@@ -180,6 +180,46 @@ int SLTI_uTest(){
     return Assert_Equal(result, ipm.registers[t1]);
 }
 
+int ECALL_uTest() {
+    InternalProcessorMemory ipm;
+    ipm.instruction = 0b00000000000000000000000001110011; //ecall
+    ipm.registers[a7] = 1;
+    word randWord = RandW();
+    DEBUG_PRINT("randWord: ");
+    DebugPrintWord(randWord);
+    DEBUG_PRINT("Ecall output: ");
+    ipm.registers[a0] = randWord;
+    ECALL(&ipm);
+
+    ipm.registers[a7] = 2;
+    ipm.registers[a0] = 0x40490FDB;
+    DEBUG_PRINT("Approximation of pi: ");
+    ECALL(&ipm);
+
+    ipm.registers[a7] = 4;
+    word address = 0x1000;
+    ipm.registers[a0] = address;
+    setByte(65, address);
+    setByte(32, address + 1);
+    setByte(115, address + 2);
+    setByte(116, address + 3);
+    setByte(114, address - 4);
+    setByte(105, address - 4 + 1);
+    setByte(110, address - 4 + 2);
+    setByte(103, address - 4 + 3);
+    setByte(0, address - 8);
+    DEBUG_PRINT("Printing \"A string\": ");
+    ECALL(&ipm);
+
+    ipm.registers[a7] = 11;
+    DEBUG_PRINT("Printing ASCII chars 33-126: ");
+    for (word i = 33; i < 126; i++) {
+        ipm.registers[a0] = i;
+        ECALL(&ipm);
+    }
+    return Assert_Equal(1, 1);
+}
+
 void MemoryTestSuite() {
     Test tests[] = {
     CreateTest(&Mem_word_uTest, "Mem word test"),
@@ -204,7 +244,8 @@ void InstructionSetTestSuite() {
     CreateTest(&SLL_uTest, "SLL test"),
     CreateTest(&SLT_uTest, "SLT test"),
     CreateTest(&SRA_uTest, "SRA test"),
-    CreateTest(&SLTI_uTest, "SLTI test")
+    CreateTest(&SLTI_uTest, "SLTI test"),
+    CreateTest(&ECALL_uTest, "ECALL test")
     };
 
     for (int i = 0; i < (sizeof(tests) / sizeof(tests[0])); i++) {
