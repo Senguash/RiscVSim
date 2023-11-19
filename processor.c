@@ -335,7 +335,7 @@ void SLT(InternalProcessorMemory *ipm) {
 }
 
 void SLTU(InternalProcessorMemory *ipm) {
-	DEBUG_PRINT("Not Implemented\n");
+	ipm->registers[GetRD(ipm)] = (uWord) ipm->registers[GetRS1(ipm)] < (uWord) ipm->registers[GetRS2(ipm)]; 
 }
 
 void XOR(InternalProcessorMemory *ipm) {
