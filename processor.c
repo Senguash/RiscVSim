@@ -369,7 +369,7 @@ void ADDI(InternalProcessorMemory *ipm) {
 }
 
 void SLLI(InternalProcessorMemory *ipm) {
-	DEBUG_PRINT("Not Implemented\n");
+    ipm->registers[GetRD(ipm)] = ipm->registers[GetRS1(ipm)] << GetImmediate11to0(ipm);
 }
 
 void SLTI(InternalProcessorMemory *ipm) {
