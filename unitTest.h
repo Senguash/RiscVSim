@@ -317,6 +317,18 @@ int ORI_uTest(){
     return Assert_Equal(temp, ipm.registers[a0]);
 }
 
+int ANDI_uTest(){
+    InternalProcessorMemory ipm;
+    ipm.registers[a1] = RandW();
+    word ins = 0b00000000101001011111010100010011;
+    ipm.instruction = ins; //and  a0 , a1 , 0b1010
+    word temp = ipm.registers[a1] & 0b1010;
+    ANDI(&ipm);
+    DEBUG_PRINT("a0 = a1 & 0b1010   a1: %d\n", ipm.registers[a1]);
+    DEBUG_PRINT("a0: %d\n", ipm.registers[a0]);
+    return Assert_Equal(temp, ipm.registers[a0]);
+}
+
 int ECALL_uTest() {
     InternalProcessorMemory ipm;
     ipm.instruction = 0b00000000000000000000000001110011; //ecall
@@ -393,7 +405,8 @@ void InstructionSetTestSuite() {
     CreateTest(&XORI_uTest, "XORI test"),
     CreateTest(&SRLI_uTest, "SRLI test"),
     CreateTest(&SRAI_uTest, "SRAI test"),
-    CreateTest(&ORI_uTest, "ORI test")
+    CreateTest(&ORI_uTest, "ORI test"),
+    CreateTest(&ANDI_uTest, "ANDI test")
     };
 
     for (int i = 0; i < (sizeof(tests) / sizeof(tests[0])); i++) {

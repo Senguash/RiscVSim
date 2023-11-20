@@ -397,7 +397,7 @@ void ORI(InternalProcessorMemory *ipm) {
 }
 
 void ANDI(InternalProcessorMemory *ipm) {
-	DEBUG_PRINT("Not Implemented\n");
+    ipm->registers[GetRD(ipm)] = ipm->registers[GetRS1(ipm)] & GetImmediate11to0(ipm);
 }
 
 void LB(InternalProcessorMemory *ipm) {
