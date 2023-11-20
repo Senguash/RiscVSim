@@ -14,7 +14,7 @@ int main(int argc, char* argv[]){
     ExecuteAllTests();
     #endif
 
-    readFile("../RiscVSim/addlarge.bin");
+    readFile("../../RiscVSim/addlarge.bin");
     InternalProcessorMemory ipm;
     ipm.pc = getInitPC();
     Compute(&ipm);

@@ -161,8 +161,8 @@ int SRA_uTest() {
     ipm.instruction = ins; //sra  a0 , a1 , a2
     word temp = ipm.registers[a1] >> ipm.registers[a2];
     SRA(&ipm);
-    DEBUG_PRINT("a0 = a1 >> a2   a1: %ld  a2: %ld\n", ipm.registers[a1], ipm.registers[a2]);
-    DEBUG_PRINT("a0: %ld\n", ipm.registers[a0]);
+    DEBUG_PRINT("a0 = a1 >> a2   a1: %d  a2: %d\n", ipm.registers[a1], ipm.registers[a2]);
+    DEBUG_PRINT("a0: %d\n", ipm.registers[a0]);
     return Assert_Equal(temp, ipm.registers[a0]);
 }
 
@@ -192,6 +192,19 @@ int SLTU_uTest(){
     DEBUG_PRINT("temp1: %u \t temp2: %u \t res:%u\n",temp1,temp2,res);
     DEBUG_PRINT("a0: %d\t t1: %d \t t2:%d\n", ipm.registers[a0],ipm.registers[t1],ipm.registers[t2]);
     return Assert_Equal(res, ipm.registers[a0]);
+}
+
+int XOR_uTest(){
+    InternalProcessorMemory ipm;
+    ipm.registers[a1] = RandW();
+    ipm.registers[a2] = RandW();
+    word ins = 0b00000000110001011100010100110011;
+    ipm.instruction = ins; //sra  a0 , a1 , a2
+    word temp = ipm.registers[a1] ^ ipm.registers[a2];
+    XOR(&ipm);
+    DEBUG_PRINT("a0 = a1 XOR a2   a1: %d  a2: %d\n", ipm.registers[a1], ipm.registers[a2]);
+    DEBUG_PRINT("a0: %d\n", ipm.registers[a0]);
+    return Assert_Equal(temp, ipm.registers[a0]);
 }
 
 int ECALL_uTest() {
@@ -260,7 +273,8 @@ void InstructionSetTestSuite() {
     CreateTest(&SRA_uTest, "SRA test"),
     CreateTest(&SLTI_uTest, "SLTI test"),
     CreateTest(&ECALL_uTest, "ECALL test"),
-    CreateTest(&SLTU_uTest, "SLTU test")
+    CreateTest(&SLTU_uTest, "SLTU test"),
+    CreateTest(&XOR_uTest, "XOR test")
     };
 
     for (int i = 0; i < (sizeof(tests) / sizeof(tests[0])); i++) {
