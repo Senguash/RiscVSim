@@ -354,11 +354,11 @@ void SRA(InternalProcessorMemory *ipm) {
 }
 
 void OR(InternalProcessorMemory *ipm) {
-	DEBUG_PRINT("Not Implemented\n");
+    ipm->registers[GetRD(ipm)] = ipm->registers[GetRS1(ipm)] | ipm->registers[GetRS2(ipm)];
 }
 
 void AND(InternalProcessorMemory *ipm) {
-	DEBUG_PRINT("Not Implemented\n");
+    ipm->registers[GetRD(ipm)] = ipm->registers[GetRS1(ipm)] & ipm->registers[GetRS2(ipm)];
 }
 
 void ADDI(InternalProcessorMemory *ipm) {

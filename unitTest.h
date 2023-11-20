@@ -199,10 +199,35 @@ int XOR_uTest(){
     ipm.registers[a1] = RandW();
     ipm.registers[a2] = RandW();
     word ins = 0b00000000110001011100010100110011;
-    ipm.instruction = ins; //sra  a0 , a1 , a2
+    ipm.instruction = ins; //xor  a0 , a1 , a2
     word temp = ipm.registers[a1] ^ ipm.registers[a2];
     XOR(&ipm);
     DEBUG_PRINT("a0 = a1 XOR a2   a1: %d  a2: %d\n", ipm.registers[a1], ipm.registers[a2]);
+    DEBUG_PRINT("a0: %d\n", ipm.registers[a0]);
+    return Assert_Equal(temp, ipm.registers[a0]);
+}
+
+int OR_uTest(){
+    InternalProcessorMemory ipm;
+    ipm.registers[a1] = RandW();
+    ipm.registers[a2] = RandW();
+    word ins = 0b00000000110001011110010100110011;
+    ipm.instruction = ins; //or  a0 , a1 , a2
+    word temp = ipm.registers[a1] | ipm.registers[a2];
+    OR(&ipm);
+    DEBUG_PRINT("a0 = a1 OR a2   a1: %d  a2: %d\n", ipm.registers[a1], ipm.registers[a2]);
+    DEBUG_PRINT("a0: %d\n", ipm.registers[a0]);
+    return Assert_Equal(temp, ipm.registers[a0]);
+}
+int AND_uTest(){
+    InternalProcessorMemory ipm;
+    ipm.registers[a1] = RandW();
+    ipm.registers[a2] = RandW();
+    word ins = 0b00000000110001011111010100110011;
+    ipm.instruction = ins; //and  a0 , a1 , a2
+    word temp = ipm.registers[a1] & ipm.registers[a2];
+    AND(&ipm);
+    DEBUG_PRINT("a0 = a1 AND a2   a1: %d  a2: %d\n", ipm.registers[a1], ipm.registers[a2]);
     DEBUG_PRINT("a0: %d\n", ipm.registers[a0]);
     return Assert_Equal(temp, ipm.registers[a0]);
 }
@@ -274,7 +299,9 @@ void InstructionSetTestSuite() {
     CreateTest(&SLTI_uTest, "SLTI test"),
     CreateTest(&ECALL_uTest, "ECALL test"),
     CreateTest(&SLTU_uTest, "SLTU test"),
-    CreateTest(&XOR_uTest, "XOR test")
+    CreateTest(&XOR_uTest, "XOR test"),
+    CreateTest(&OR_uTest, "OR test"),
+    CreateTest(&AND_uTest, "AND test")
     };
 
     for (int i = 0; i < (sizeof(tests) / sizeof(tests[0])); i++) {
