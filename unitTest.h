@@ -206,6 +206,20 @@ int SLTU_uTest(){
     return Assert_Equal(res, ipm.registers[a0]);
 }
 
+int LB_uTest(){
+    InternalProcessorMemory ipm;
+    ipm.instruction = 0b00000000000000110000001010000011; //lb t0, 0(t1)
+    byte temp1 = RandB();
+    DEBUG_PRINT("temp1: %d \n", temp1);
+    word address = 0x100;
+    setHWord(temp1, address);
+    ipm.registers[t1] = address;
+    LB(&ipm);
+    word comp = (temp1 & 0xFF) | ((temp1 & 0x80) ? 0xFFFFFF00 : 0);
+    DEBUG_PRINT("comp: %d \n", comp);
+    return Assert_Equal(comp, ipm.registers[t0]);
+}
+
 int LH_uTest(){
     InternalProcessorMemory ipm;
     ipm.instruction = 0b00000000000000110001001010000011; // lh t0, 0(t1)
@@ -218,6 +232,19 @@ int LH_uTest(){
     word comp = (temp1 & 0xFFFF) | ((temp1 & 0x8000) ? 0xFFFF0000 : 0);
     DEBUG_PRINT("comp: %d \n", comp);
     return Assert_Equal(comp, ipm.registers[t0]);
+}
+
+int LW_uTest(){
+    InternalProcessorMemory ipm;
+    ipm.instruction = 0b00000000000000110010001010000011; //lw t0, 0(t1)
+    word temp1 = RandW();
+    DEBUG_PRINT("temp1: %d \n", temp1);
+    word address = 0x100;
+    setWord(temp1, address);
+    ipm.registers[t1] = address;
+    LW(&ipm);
+    DEBUG_PRINT("t0: %d \n", ipm.registers[t0]);
+    return Assert_Equal(temp1, ipm.registers[t0]);
 }
 
 int XOR_uTest(){
@@ -347,7 +374,7 @@ int SW_uTest(){
     InternalProcessorMemory ipm;
     ipm.instruction = 0b00000000100001011010001110100011; //        sw s0, 7(a1)
     word val = RandW();
-    word address = RandW();
+    word address = RandUW();
     word imm = 7;
     ipm.registers[s0] = val; 
     ipm.registers[a1] = address;
@@ -456,7 +483,9 @@ void InstructionSetTestSuite() {
     CreateTest(&ANDI_uTest, "ANDI test"),
     CreateTest(&SW_uTest,"SW test"),
     CreateTest(&BEQ_uTest,"BEQ test"),
-    CreateTest(&LH_uTest, "LH test")
+    CreateTest(&LB_uTest, "LB test"),
+    CreateTest(&LH_uTest, "LH test"),
+    CreateTest(&LW_uTest, "LW test")
     };
 
     for (int i = 0; i < (sizeof(tests) / sizeof(tests[0])); i++) {

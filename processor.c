@@ -416,7 +416,8 @@ void ANDI(InternalProcessorMemory *ipm) {
 }
 
 void LB(InternalProcessorMemory *ipm) {
-	DEBUG_PRINT("Not Implemented\n");
+	ipm->registers[GetRD(ipm)] = getByte(ipm->registers[GetRS1(ipm) + GetImmediate11to0(ipm)]);
+	ipm->registers[GetRD(ipm)] = (ipm->registers[GetRD(ipm)] & 0xFF) | ((ipm->registers[GetRD(ipm)] & 0x80) ? 0xFFFFFF00 : 0);
 }
 
 void LH(InternalProcessorMemory *ipm) {
@@ -425,7 +426,7 @@ void LH(InternalProcessorMemory *ipm) {
 }
 
 void LW(InternalProcessorMemory *ipm) {
-	DEBUG_PRINT("Not Implemented\n");
+	ipm->registers[GetRD(ipm)] = getWord(ipm->registers[GetRS1(ipm) + GetImmediate11to0(ipm)]);
 }
 
 void LBU(InternalProcessorMemory *ipm) {
