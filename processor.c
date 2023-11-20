@@ -131,8 +131,20 @@ void SetRegisterValue(byte index, word input, InternalProcessorMemory *ipm) {
 	ipm->registers[index] = input;
 }
 
-word GetImmediate11to0(InternalProcessorMemory* ipm) {
+word GetImmediate11to0Unsigned(InternalProcessorMemory* ipm) {
 	return (word)(ipm->instruction >> 20) & 0b00000000000000000000111111111111;
+}
+word GetImmediate11to0(InternalProcessorMemory* ipm) {
+    return (word)(ipm->instruction >> 20);
+}
+
+word GetImmediate12and10to5Unsigned(InternalProcessorMemory* ipm) {
+    word toReturn = 0;
+    toReturn = toReturn | (((ipm->instruction >> 31) & 0b00000000000000000000000000000001) << 12); // bit 12
+    toReturn = toReturn | (((ipm->instruction >> 25) & 0b00000000000000000000000000111111) << 5); // bit 10:5
+    toReturn = toReturn | (((ipm->instruction >> 8) & 0b00000000000000000000000000001111) << 1); // bit 4:1
+    toReturn = toReturn | (((ipm->instruction >> 7) & 0b00000000000000000000000000000001) << 11); // bit 11
+    return toReturn;
 }
 
 word GetImmediate12and10to5(InternalProcessorMemory* ipm) {
@@ -144,14 +156,24 @@ word GetImmediate12and10to5(InternalProcessorMemory* ipm) {
     return toReturn;
 }
 
-word GetUpperImmediate(InternalProcessorMemory* ipm) {
-	return (ipm->instruction >> 12) & 0b11111111111111111111;
+word GetImmediate31to12(InternalProcessorMemory* ipm) {
+	return (ipm->instruction >> 12);
+}
+
+word GetImmediate31to12Unsigned(InternalProcessorMemory* ipm) {
+    return (ipm->instruction >> 12) & 0b11111111111111111111;
 }
 
 word GetImmediate11to5(InternalProcessorMemory* ipm){
-	word temp1 = (ipm->instruction >> 25)<<5;
+	word temp1 = (ipm->instruction >> 25) << 5;
 	word temp2 = (ipm->instruction >> 7 ) & 0x0000001f;
 	return temp1 | temp2;
+}
+
+word GetImmediate11to5Unsigned(InternalProcessorMemory* ipm){
+    word temp1 = (ipm->instruction >> 25) & 0b00000000000000000000000001111111 << 5;
+    word temp2 = (ipm->instruction >> 7) & 0x0000001f;
+    return temp1 | temp2;
 }
 
 void LogicalArithmetic(InternalProcessorMemory *ipm) {
@@ -392,7 +414,7 @@ void SLTI(InternalProcessorMemory *ipm) {
 }
 
 void SLTIU(InternalProcessorMemory *ipm) {
-    ipm->registers[GetRD(ipm)] = ((uWord)ipm->registers[GetRS1(ipm)]) < ((uWord) GetImmediate11to0(ipm));
+    ipm->registers[GetRD(ipm)] = ((uWord)ipm->registers[GetRS1(ipm)]) < (GetImmediate11to0Unsigned(ipm));
 }
 
 void XORI(InternalProcessorMemory *ipm) {
@@ -477,7 +499,7 @@ void BGEU(InternalProcessorMemory *ipm) {
 }
 
 void LUI(InternalProcessorMemory *ipm) {
-	ipm->registers[GetRD(ipm)] = GetUpperImmediate(ipm);
+	ipm->registers[GetRD(ipm)] = GetImmediate31to12(ipm);
 }
 
 void AUIPC(InternalProcessorMemory *ipm) {
