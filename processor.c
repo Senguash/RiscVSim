@@ -377,7 +377,7 @@ void SLTI(InternalProcessorMemory *ipm) {
 }
 
 void SLTIU(InternalProcessorMemory *ipm) {
-	DEBUG_PRINT("Not Implemented\n");
+    ipm->registers[GetRD(ipm)] = ((uWord)ipm->registers[GetRS1(ipm)]) < ((uWord) GetImmediate11to0(ipm));
 }
 
 void XORI(InternalProcessorMemory *ipm) {
