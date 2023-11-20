@@ -420,7 +420,8 @@ void LB(InternalProcessorMemory *ipm) {
 }
 
 void LH(InternalProcessorMemory *ipm) {
-	DEBUG_PRINT("Not Implemented\n");
+	ipm->registers[GetRD(ipm)] = getHWord(ipm->registers[GetRS1(ipm) + GetImmediate11to0(ipm)]);
+	ipm->registers[GetRD(ipm)] = (ipm->registers[GetRD(ipm)] & 0xFFFF) | ((ipm->registers[GetRD(ipm)] & 0x8000) ? 0xFFFF0000 : 0);
 }
 
 void LW(InternalProcessorMemory *ipm) {

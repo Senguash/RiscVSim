@@ -206,6 +206,20 @@ int SLTU_uTest(){
     return Assert_Equal(res, ipm.registers[a0]);
 }
 
+int LH_uTest(){
+    InternalProcessorMemory ipm;
+    ipm.instruction = 0b00000000000000110001001010000011; // lh t0, 0(t1)
+    hWord temp1 = RandHW();
+    DEBUG_PRINT("temp1: %d \n", temp1);
+    word address = 0x100;
+    setHWord(temp1, address);
+    ipm.registers[t1] = address;
+    LH(&ipm);
+    word comp = (temp1 & 0xFFFF) | ((temp1 & 0x8000) ? 0xFFFF0000 : 0);
+    DEBUG_PRINT("comp: %d \n", comp);
+    return Assert_Equal(comp, ipm.registers[t0]);
+}
+
 int XOR_uTest(){
     InternalProcessorMemory ipm;
     ipm.registers[a1] = RandW();
@@ -441,7 +455,8 @@ void InstructionSetTestSuite() {
     CreateTest(&ORI_uTest, "ORI test"),
     CreateTest(&ANDI_uTest, "ANDI test"),
     CreateTest(&SW_uTest,"SW test"),
-    CreateTest(&BEQ_uTest,"BEQ test")
+    CreateTest(&BEQ_uTest,"BEQ test"),
+    CreateTest(&LH_uTest, "LH test")
     };
 
     for (int i = 0; i < (sizeof(tests) / sizeof(tests[0])); i++) {
