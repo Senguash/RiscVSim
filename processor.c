@@ -389,7 +389,7 @@ void SRLI(InternalProcessorMemory *ipm) {
 }
 
 void SRAI(InternalProcessorMemory *ipm) {
-	DEBUG_PRINT("Not Implemented\n");
+    ipm->registers[GetRD(ipm)] = ipm->registers[GetRS1(ipm)] >> GetImmediate11to0(ipm);
 }
 
 void ORI(InternalProcessorMemory *ipm) {

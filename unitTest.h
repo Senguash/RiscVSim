@@ -166,6 +166,18 @@ int SRA_uTest() {
     return Assert_Equal(temp, ipm.registers[a0]);
 }
 
+int SRAI_uTest(){
+    InternalProcessorMemory ipm;
+    ipm.registers[a1] = RandW();
+    word ins = 0b01000000001101011101010100010011;
+    ipm.instruction = ins; //srai  a0 , a1 , 3
+    word temp = ipm.registers[a1] >> 3;
+    SRAI(&ipm);
+    DEBUG_PRINT("a0 = a1 >> 3   a1: %d\n", ipm.registers[a1]);
+    DEBUG_PRINT("a0: %d\n", ipm.registers[a0]);
+    return Assert_Equal(temp, ipm.registers[a0]);
+}
+
 int SLTI_uTest(){
     InternalProcessorMemory ipm;
     ipm.instruction = 0b00000011001000111010001100010011; //slti t1, t2, 50
@@ -367,7 +379,8 @@ void InstructionSetTestSuite() {
     CreateTest(&SLLI_uTest, "SLLI test"),
     CreateTest(&SLTIU_uTest, "SLTIU test"),
     CreateTest(&XORI_uTest, "XORI test"),
-    CreateTest(&SRLI_uTest, "SRLI test")
+    CreateTest(&SRLI_uTest, "SRLI test"),
+    CreateTest(&SRAI_uTest, "SRAI test")
     };
 
     for (int i = 0; i < (sizeof(tests) / sizeof(tests[0])); i++) {
