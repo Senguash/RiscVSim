@@ -21,7 +21,7 @@
 #endif
 
 #define WORD_TO_BINARY_PATTERN "0b %c%c%c%c%c%c%c%c %c%c%c%c%c%c%c%c %c%c%c%c%c%c%c%c %c%c%c%c%c%c%c%c"
-#define WORD_TO_BINARY(word)  \
+#define WORD_TO_BINARY(word)\
   ((word) & 0x80000000 ? '1' : '0'), \
   ((word) & 0x40000000 ? '1' : '0'), \
   ((word) & 0x20000000 ? '1' : '0'), \
@@ -54,3 +54,4 @@
   ((word) & 0x04 ? '1' : '0'), \
   ((word) & 0x02 ? '1' : '0'), \
   ((word) & 0x01 ? '1' : '0')
+
