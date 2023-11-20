@@ -343,7 +343,10 @@ void XOR(InternalProcessorMemory *ipm) {
 }
 
 void SRL(InternalProcessorMemory *ipm) {
-	DEBUG_PRINT("Not Implemented\n");
+    uWord a1t = ipm->registers[GetRS1(ipm)];
+    uWord a2t = ipm->registers[GetRS2(ipm)];
+    word ret = (word)(a1t>>a2t);
+    ipm->registers[GetRD(ipm)] = ret;
 }
 
 void SRA(InternalProcessorMemory *ipm) {

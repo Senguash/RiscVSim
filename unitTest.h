@@ -232,6 +232,19 @@ int AND_uTest(){
     return Assert_Equal(temp, ipm.registers[a0]);
 }
 
+int SRL_uTest(){
+    InternalProcessorMemory ipm;
+    ipm.registers[a1] = RandW();
+    ipm.registers[a2] = (rand() % 31) + 1;
+    word ins = 0b00000000110001011101010100110011;
+    ipm.instruction = ins; //srl  a0 , a1 , a2
+    word temp = ((uWord)ipm.registers[a1]) >> ((uWord)ipm.registers[a2]);
+    SRL(&ipm);
+    DEBUG_PRINT("a0 = a1 >>(logi) a2   a1: %d  a2: %d\n", ipm.registers[a1], ipm.registers[a2]);
+    DEBUG_PRINT("a0: %d\n", ipm.registers[a0]);
+    return Assert_Equal(temp, ipm.registers[a0]);
+}
+
 int ECALL_uTest() {
     InternalProcessorMemory ipm;
     ipm.instruction = 0b00000000000000000000000001110011; //ecall
@@ -301,7 +314,8 @@ void InstructionSetTestSuite() {
     CreateTest(&SLTU_uTest, "SLTU test"),
     CreateTest(&XOR_uTest, "XOR test"),
     CreateTest(&OR_uTest, "OR test"),
-    CreateTest(&AND_uTest, "AND test")
+    CreateTest(&AND_uTest, "AND test"),
+    CreateTest(&SRL_uTest, "SRL test")
     };
 
     for (int i = 0; i < (sizeof(tests) / sizeof(tests[0])); i++) {
