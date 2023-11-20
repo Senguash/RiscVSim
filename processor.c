@@ -135,6 +135,15 @@ word GetImmediate11to0(InternalProcessorMemory* ipm) {
 	return (word)(ipm->instruction >> 20) & 0b00000000000000000000111111111111;
 }
 
+word GetImmediate12and10to5(InternalProcessorMemory* ipm) {
+    word toReturn = 0;
+    toReturn = toReturn | ((ipm->instruction >> 31) << 12); // bit 12
+    toReturn = toReturn | (((ipm->instruction >> 25) & 0b00000000000000000000000000111111) << 5); // bit 10:5
+    toReturn = toReturn | (((ipm->instruction >> 8) & 0b00000000000000000000000000001111) << 1); // bit 4:1
+    toReturn = toReturn | (((ipm->instruction >> 7) & 0b00000000000000000000000000000001) << 11); // bit 11
+    return toReturn;
+}
+
 word GetUpperImmediate(InternalProcessorMemory* ipm) {
 	return (ipm->instruction >> 12) & 0b11111111111111111111;
 }
@@ -433,7 +442,9 @@ void SW(InternalProcessorMemory *ipm) {
 }
 
 void BEQ(InternalProcessorMemory *ipm) {
-	DEBUG_PRINT("Not Implemented\n");
+	if(ipm->registers[GetRS1(ipm)] == ipm->registers[GetRS2(ipm)]){
+        ipm->pc += GetImmediate12and10to5(ipm);
+    }
 }
 
 void BNE(InternalProcessorMemory *ipm) {

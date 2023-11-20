@@ -329,6 +329,26 @@ int ANDI_uTest(){
     return Assert_Equal(temp, ipm.registers[a0]);
 }
 
+int BEQ_uTest(){
+    InternalProcessorMemory ipm;
+    ipm.registers[a1] = (word) rand()%2;
+    ipm.registers[a2] = (word) rand()%2;
+    ipm.pc = 0;
+    word ins = 0b00000000101101100000010001100011;
+    ipm.instruction = ins;// beq  a2 , a1 , 8
+    int temp = -1;
+    if(ipm.registers[a1] == ipm.registers[a2]) {
+        temp = 8;
+    } else {
+        temp = 0;
+    }
+    BEQ(&ipm);
+    DEBUG_PRINT("a1: %d  a2: %d\n", ipm.registers[a1], ipm.registers[a2]);
+    DEBUG_PRINT("pc should be: %d  pc is: %d\n", temp, ipm.pc);
+    return Assert_Equal(temp, ipm.pc);
+}
+
+
 int ECALL_uTest() {
     InternalProcessorMemory ipm;
     ipm.instruction = 0b00000000000000000000000001110011; //ecall
@@ -406,7 +426,8 @@ void InstructionSetTestSuite() {
     CreateTest(&SRLI_uTest, "SRLI test"),
     CreateTest(&SRAI_uTest, "SRAI test"),
     CreateTest(&ORI_uTest, "ORI test"),
-    CreateTest(&ANDI_uTest, "ANDI test")
+    CreateTest(&ANDI_uTest, "ANDI test"),
+    CreateTest(&BEQ_uTest,"BEQ test")
     };
 
     for (int i = 0; i < (sizeof(tests) / sizeof(tests[0])); i++) {
