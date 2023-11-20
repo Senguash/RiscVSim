@@ -148,6 +148,12 @@ word GetUpperImmediate(InternalProcessorMemory* ipm) {
 	return (ipm->instruction >> 12) & 0b11111111111111111111;
 }
 
+word GetImmediate11to5(InternalProcessorMemory* ipm){
+	word temp1 = (ipm->instruction >> 25)<<5;
+	word temp2 = (ipm->instruction >> 7 ) & 0x0000001f;
+	return temp1 | temp2;
+}
+
 void LogicalArithmetic(InternalProcessorMemory *ipm) {
 	switch (GetFunct3(ipm->instruction)) {
 	case (0b000):
@@ -438,7 +444,8 @@ void SH(InternalProcessorMemory *ipm) {
 }
 
 void SW(InternalProcessorMemory *ipm) {
-	DEBUG_PRINT("Not Implemented\n");
+	setWord(ipm->registers[GetRS2(ipm)],ipm->registers[GetRS1(ipm)]+GetImmediate11to5(ipm));
+	
 }
 
 void BEQ(InternalProcessorMemory *ipm) {

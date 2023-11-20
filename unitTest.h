@@ -329,6 +329,19 @@ int ANDI_uTest(){
     return Assert_Equal(temp, ipm.registers[a0]);
 }
 
+int SW_uTest(){
+    InternalProcessorMemory ipm;
+    ipm.instruction = 0b00000000100001011010001110100011; //        sw s0, 7(a1)
+    word val = RandW();
+    word address = RandW();
+    word imm = 7;
+    ipm.registers[s0] = val; 
+    ipm.registers[a1] = address;
+    SW(&ipm);
+    word res = getWord(address+imm);
+    return Assert_Equal(res,val);
+} 
+
 int BEQ_uTest(){
     InternalProcessorMemory ipm;
     ipm.registers[a1] = (word) rand()%2;
@@ -427,6 +440,7 @@ void InstructionSetTestSuite() {
     CreateTest(&SRAI_uTest, "SRAI test"),
     CreateTest(&ORI_uTest, "ORI test"),
     CreateTest(&ANDI_uTest, "ANDI test"),
+    CreateTest(&SW_uTest,"SW test"),
     CreateTest(&BEQ_uTest,"BEQ test")
     };
 
