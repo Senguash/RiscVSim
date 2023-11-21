@@ -497,6 +497,18 @@ int BLTU_uTest(){
     return Assert_Equal(temp, ipm.pc);
 }
 
+int AUIPC_uTest(){
+    InternalProcessorMemory ipm;
+    ipm.pc = (rand()%10)*4;
+    word ins = 0b00000000000001001001010100010111;
+    ipm.instruction = ins;// auipc a0, 73
+    int temp = ipm.pc + (73 << 12);
+    AUIPC(&ipm);
+    DEBUG_PRINT("pc is : %d\n", ipm.pc);
+    DEBUG_PRINT("Should be: %d   is: %d\n", temp, ipm.registers[a0]);
+    return Assert_Equal(temp, ipm.registers[a0]);
+}
+
 int ECALL_uTest() {
     InternalProcessorMemory ipm;
     ipm.instruction = 0b00000000000000000000000001110011; //ecall
@@ -584,7 +596,8 @@ void InstructionSetTestSuite() {
     CreateTest(&BGE_uTest, "BGE test"),
     CreateTest(&BNE_uTest, "BNE test"),
     CreateTest(&BGEU_uTest, "BGEU test"),
-    CreateTest(&BLTU_uTest, "BLTU test")
+    CreateTest(&BLTU_uTest, "BLTU test"),
+    CreateTest(&AUIPC_uTest, "AUIPC test")
     };
 
     for (int i = 0; i < (sizeof(tests) / sizeof(tests[0])); i++) {

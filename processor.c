@@ -513,7 +513,7 @@ void LUI(InternalProcessorMemory *ipm) {
 }
 
 void AUIPC(InternalProcessorMemory *ipm) {
-	DEBUG_PRINT("Not Implemented\n");
+    ipm->registers[GetRD(ipm)] = ipm->pc + (GetImmediate31to12(ipm)<<12);
 }
 
 void JAL(InternalProcessorMemory *ipm) {
