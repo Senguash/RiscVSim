@@ -380,6 +380,7 @@ int SW_uTest(){
     ipm.registers[a1] = address;
     SW(&ipm);
     word res = getWord(address+imm);
+    DEBUG_PRINT("Address: %d \t val:%d \t res:%d\n",address,val,res);
     return Assert_Equal(res,val);
 } 
 
@@ -519,7 +520,22 @@ int SH_uTest(){
     ipm.registers[a1] = address;
     SH(&ipm);
     hWord res = getHWord(address+imm);
+    DEBUG_PRINT("Address: %d \t val:%d \t res:%d\n",address,val,res);
     return Assert_Equal(res, val);
+}
+
+int SB_uTest(){
+    InternalProcessorMemory ipm;
+    word address = RandUW();
+    byte val = RandB();
+    word imm = 7; 
+    ipm.instruction = 0b00000000100001011000001110100011; //       sb s0, 7(a1)
+    ipm.registers[s0] = (word)val;
+    ipm.registers[a1] = address;
+    SB(&ipm);
+    byte res = getByte(address + imm);
+    DEBUG_PRINT("Address: %d \t val:%d \t res:%d\n",address,val,res);
+    return Assert_Equal(res,val);
 }
 
 int ECALL_uTest() {
@@ -611,7 +627,8 @@ void InstructionSetTestSuite() {
     CreateTest(&BGEU_uTest, "BGEU test"),
     CreateTest(&BLTU_uTest, "BLTU test"),
     CreateTest(&AUIPC_uTest, "AUIPC test"),
-    CreateTest(&SH_uTest, "SH test")
+    CreateTest(&SH_uTest, "SH test"),
+    CreateTest(&SB_uTest, "SB test")
     };
 
     for (int i = 0; i < (sizeof(tests) / sizeof(tests[0])); i++) {
