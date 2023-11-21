@@ -465,7 +465,6 @@ void SB(InternalProcessorMemory *ipm) {
 
 void SH(InternalProcessorMemory *ipm) {
 	setHWord((hWord)ipm->registers[GetRS2(ipm)],ipm->registers[GetRS1(ipm)]+GetImmediate11to5(ipm));
-	DEBUG_PRINT("Not Implemented\n");
 }
 
 void SW(InternalProcessorMemory *ipm) {
