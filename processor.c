@@ -483,7 +483,9 @@ void BNE(InternalProcessorMemory *ipm) {
 }
 
 void BLT(InternalProcessorMemory *ipm) {
-	DEBUG_PRINT("Not Implemented\n");
+    if(ipm->registers[GetRS1(ipm)] < ipm->registers[GetRS2(ipm)]){
+        ipm->pc += GetImmediate12and10to5(ipm);
+    }
 }
 
 void BGE(InternalProcessorMemory *ipm) {
