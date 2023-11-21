@@ -497,7 +497,9 @@ void BGE(InternalProcessorMemory *ipm) {
 }
 
 void BLTU(InternalProcessorMemory *ipm) {
-	DEBUG_PRINT("Not Implemented\n");
+    if(((uWord)ipm->registers[GetRS1(ipm)]) < ((uWord)ipm->registers[GetRS2(ipm)])){
+        ipm->pc += GetImmediate12and10to5(ipm);
+    }
 }
 
 void BGEU(InternalProcessorMemory *ipm) {

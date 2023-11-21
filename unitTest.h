@@ -478,6 +478,24 @@ int BGEU_uTest(){
     return Assert_Equal(temp, ipm.pc);
 }
 
+int BLTU_uTest(){
+    InternalProcessorMemory ipm;
+    ipm.registers[a1] = (word) (rand()%3-1);
+    ipm.registers[a2] = (word) (rand()%3-1);
+    ipm.pc = 0;
+    word ins = 0b00000000110001011110010001100011;
+    ipm.instruction = ins;// bltu  a1 , a2 , 8
+    int temp = -1;
+    if(((uWord)ipm.registers[a1]) < ((uWord)ipm.registers[a2])) {
+        temp = 8;
+    } else {
+        temp = 0;
+    }
+    BLTU(&ipm);
+    DEBUG_PRINT("a1: %d  a2: %d\n", ipm.registers[a1], ipm.registers[a2]);
+    DEBUG_PRINT("pc should be: %d  pc is: %d\n", temp, ipm.pc);
+    return Assert_Equal(temp, ipm.pc);
+}
 
 int ECALL_uTest() {
     InternalProcessorMemory ipm;
@@ -565,7 +583,8 @@ void InstructionSetTestSuite() {
     CreateTest(&BLT_uTest, "BLT test"),
     CreateTest(&BGE_uTest, "BGE test"),
     CreateTest(&BNE_uTest, "BNE test"),
-    CreateTest(&BGEU_uTest, "BGEU test")
+    CreateTest(&BGEU_uTest, "BGEU test"),
+    CreateTest(&BLTU_uTest, "BLTU test")
     };
 
     for (int i = 0; i < (sizeof(tests) / sizeof(tests[0])); i++) {
