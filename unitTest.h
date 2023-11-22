@@ -550,9 +550,28 @@ int JAL_uTest(){
     DEBUG_PRINT("PC should be: %d   is: %d\n", newPC, ipm.pc);
     DEBUG_PRINT("return address should be: %d   is: %d\n", returnAaddress, ipm.registers[a0]);
     if(newPC == ipm.pc && returnAaddress == ipm.registers[a0]){
-        return Assert_Equal(1,1);
+        return 1;
     } else {
-        return Assert_Equal(1,0);
+        return 0;
+    }
+}
+
+int JALR_uTest(){
+    InternalProcessorMemory ipm;
+    ipm.pc = (rand()%3)*4;
+    ipm.registers[a1] = RandW();
+    word ins = 0b11111111110001011000010101100111;
+    ipm.instruction = ins;// jal a0, a1, -4
+    int newPC = (ipm.registers[a1] - 4) & (~0x00000001);
+    word returnAddress = ipm.pc + 4;
+    DEBUG_PRINT("pc was: %d\n", ipm.pc);
+    JALR(&ipm);
+    DEBUG_PRINT("PC should be: %d   is: %d\n", newPC, ipm.pc);
+    DEBUG_PRINT("return address should be: %d   is: %d\n", returnAddress, ipm.registers[a0]);
+    if(newPC == ipm.pc && returnAddress == ipm.registers[a0]){
+        return 1;
+    } else {
+        return 0;
     }
 }
 
@@ -648,7 +667,8 @@ void InstructionSetTestSuite() {
     CreateTest(&SH_uTest, "SH test"),
     CreateTest(&SB_uTest, "SB test"),
     CreateTest(&AUIPC_uTest, "AUIPC test"),
-    CreateTest(&JAL_uTest, "JAL test")
+    CreateTest(&JAL_uTest, "JAL test"),
+    CreateTest(&JALR_uTest, "JALR test")
     };
 
     for (int i = 0; i < (sizeof(tests) / sizeof(tests[0])); i++) {

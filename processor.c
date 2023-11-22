@@ -531,7 +531,8 @@ void JAL(InternalProcessorMemory *ipm) {
 }
 
 void JALR(InternalProcessorMemory *ipm) {
-	DEBUG_PRINT("Not Implemented\n");
+    ipm->registers[GetRD(ipm)] = ipm->pc + 4;
+    ipm->pc = (ipm->registers[GetRS1(ipm)] + GetImmediate11to0(ipm)) & (~0x00000001);
 }
 
 void PAUSE(InternalProcessorMemory *ipm) {
