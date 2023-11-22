@@ -646,7 +646,7 @@ void InstructionSetTestSuite() {
     CreateTest(&BLTU_uTest, "BLTU test"),
     CreateTest(&AUIPC_uTest, "AUIPC test"),
     CreateTest(&SH_uTest, "SH test"),
-    CreateTest(&SB_uTest, "SB test")
+    CreateTest(&SB_uTest, "SB test"),
     CreateTest(&AUIPC_uTest, "AUIPC test"),
     CreateTest(&JAL_uTest, "JAL test")
     };
