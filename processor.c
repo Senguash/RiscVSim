@@ -469,11 +469,11 @@ void LHU(InternalProcessorMemory *ipm) {
 }
 
 void SB(InternalProcessorMemory *ipm) {
-	DEBUG_PRINT("Not Implemented\n");
+	setByte((byte)ipm->registers[GetRS2(ipm)],ipm->registers[GetRS1(ipm)]+GetImmediate11to5(ipm));	
 }
 
 void SH(InternalProcessorMemory *ipm) {
-	DEBUG_PRINT("Not Implemented\n");
+	setHWord((hWord)ipm->registers[GetRS2(ipm)],ipm->registers[GetRS1(ipm)]+GetImmediate11to5(ipm));
 }
 
 void SW(InternalProcessorMemory *ipm) {
