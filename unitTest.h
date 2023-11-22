@@ -509,6 +509,24 @@ int AUIPC_uTest(){
     return Assert_Equal(temp, ipm.registers[a0]);
 }
 
+int JAL_uTest(){
+    InternalProcessorMemory ipm;
+    ipm.pc = (rand()%3)*4;
+    word ins = 0b11111111110111111111010101101111;
+    ipm.instruction = ins;// jal a0, -4
+    int newPC = ipm.pc - 4;
+    word returnAaddress = ipm.pc + 4;
+    DEBUG_PRINT("pc was: %d\n", ipm.pc);
+    JAL(&ipm);
+    DEBUG_PRINT("PC should be: %d   is: %d\n", newPC, ipm.pc);
+    DEBUG_PRINT("return address should be: %d   is: %d\n", returnAaddress, ipm.registers[a0]);
+    if(newPC == ipm.pc && returnAaddress == ipm.registers[a0]){
+        return Assert_Equal(1,1);
+    } else {
+        return Assert_Equal(1,0);
+    }
+}
+
 int ECALL_uTest() {
     InternalProcessorMemory ipm;
     ipm.instruction = 0b00000000000000000000000001110011; //ecall
@@ -597,7 +615,8 @@ void InstructionSetTestSuite() {
     CreateTest(&BNE_uTest, "BNE test"),
     CreateTest(&BGEU_uTest, "BGEU test"),
     CreateTest(&BLTU_uTest, "BLTU test"),
-    CreateTest(&AUIPC_uTest, "AUIPC test")
+    CreateTest(&AUIPC_uTest, "AUIPC test"),
+    CreateTest(&JAL_uTest, "JAL test")
     };
 
     for (int i = 0; i < (sizeof(tests) / sizeof(tests[0])); i++) {

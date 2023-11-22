@@ -138,7 +138,7 @@ word GetImmediate11to0(InternalProcessorMemory* ipm) {
     return (word)(ipm->instruction >> 20);
 }
 
-word GetImmediate12and10to5Unsigned(InternalProcessorMemory* ipm) {
+uWord GetImmediate12and10to5Unsigned(InternalProcessorMemory* ipm) {
     word toReturn = 0;
     toReturn = toReturn | (((ipm->instruction >> 31) & 0b00000000000000000000000000000001) << 12); // bit 12
     toReturn = toReturn | (((ipm->instruction >> 25) & 0b00000000000000000000000000111111) << 5); // bit 10:5
@@ -150,9 +150,18 @@ word GetImmediate12and10to5Unsigned(InternalProcessorMemory* ipm) {
 word GetImmediate12and10to5(InternalProcessorMemory* ipm) {
     word toReturn = 0;
     toReturn = toReturn | ((ipm->instruction >> 31) << 12); // bit 12
-    toReturn = toReturn | (((ipm->instruction >> 25) & 0b00000000000000000000000000111111) << 5); // bit 10:5
-    toReturn = toReturn | (((ipm->instruction >> 8) & 0b00000000000000000000000000001111) << 1); // bit 4:1
-    toReturn = toReturn | (((ipm->instruction >> 7) & 0b00000000000000000000000000000001) << 11); // bit 11
+    toReturn = toReturn | (((ipm->instruction >> 25) & 0b00000000000000000000000000111111) << 5);  // bit 10:5
+    toReturn = toReturn | (((ipm->instruction >> 8)  & 0b00000000000000000000000000001111) << 1);  // bit 4:1
+    toReturn = toReturn | (((ipm->instruction >> 7)  & 0b00000000000000000000000000000001) << 11); // bit 11
+    return toReturn;
+}
+
+word GetImmediate20and10to1and11and19to12(InternalProcessorMemory* ipm){
+    word toReturn = 0;
+    toReturn = toReturn | ((ipm->instruction >> 31) << 20); // bit 20
+    toReturn = toReturn | (((ipm->instruction >> 21) & 0b00000000000000000000001111111111) << 1);  // bit 10:1
+    toReturn = toReturn | (((ipm->instruction >> 20) & 0b00000000000000000000000000000001) << 11); // bit 11
+    toReturn = toReturn | (((ipm->instruction >> 12) & 0b00000000000000000000000011111111) << 12); // bit 19:12
     return toReturn;
 }
 
@@ -160,7 +169,7 @@ word GetImmediate31to12(InternalProcessorMemory* ipm) {
 	return (ipm->instruction >> 12);
 }
 
-word GetImmediate31to12Unsigned(InternalProcessorMemory* ipm) {
+uWord GetImmediate31to12Unsigned(InternalProcessorMemory* ipm) {
     return (ipm->instruction >> 12) & 0b11111111111111111111;
 }
 
@@ -517,7 +526,8 @@ void AUIPC(InternalProcessorMemory *ipm) {
 }
 
 void JAL(InternalProcessorMemory *ipm) {
-	DEBUG_PRINT("Not Implemented\n");
+    ipm->registers[GetRD(ipm)] = ipm->pc + 4;
+    ipm->pc = ipm->pc + GetImmediate20and10to1and11and19to12(ipm);
 }
 
 void JALR(InternalProcessorMemory *ipm) {
