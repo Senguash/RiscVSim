@@ -393,7 +393,7 @@ int BEQ_uTest(){
     ipm.instruction = ins;// beq  a2 , a1 , 8
     int temp = -1;
     if(ipm.registers[a1] == ipm.registers[a2]) {
-        temp = 8;
+        temp = 4; //4 because pc is counted 4 up when executing
     } else {
         temp = 0;
     }
@@ -412,7 +412,7 @@ int BLT_uTest(){
     ipm.instruction = ins;// blt  a1 , a2 , 8
     int temp = -1;
     if(ipm.registers[a1] < ipm.registers[a2]) {
-        temp = 8;
+        temp = 4; //4 because pc is counted 4 up when executing
     } else {
         temp = 0;
     }
@@ -431,7 +431,7 @@ int BGE_uTest(){
     ipm.instruction = ins;// bge  a1 , a2 , 8
     int temp = -1;
     if(ipm.registers[a1] >= ipm.registers[a2]) {
-        temp = 8;
+        temp = 4; //4 because pc is counted 4 up when executing
     } else {
         temp = 0;
     }
@@ -450,7 +450,7 @@ int BNE_uTest(){
     ipm.instruction = ins;// bne  a1 , a2 , 8
     int temp = -1;
     if(ipm.registers[a1] != ipm.registers[a2]) {
-        temp = 8;
+        temp = 4; //4 because pc is counted 4 up when executing
     } else {
         temp = 0;
     }
@@ -469,7 +469,7 @@ int BGEU_uTest(){
     ipm.instruction = ins;// bgeu  a1 , a2 , 8
     int temp = -1;
     if(((uWord)ipm.registers[a1]) >= ((uWord)ipm.registers[a2])) {
-        temp = 8;
+        temp = 4; //4 because pc is counted 4 up when executing
     } else {
         temp = 0;
     }
@@ -488,7 +488,7 @@ int BLTU_uTest(){
     ipm.instruction = ins;// bltu  a1 , a2 , 8
     int temp = -1;
     if(((uWord)ipm.registers[a1]) < ((uWord)ipm.registers[a2])) {
-        temp = 8;
+        temp = 4; //4 because pc is counted 4 up when executing
     } else {
         temp = 0;
     }
@@ -543,7 +543,7 @@ int JAL_uTest(){
     ipm.pc = (rand()%3)*4;
     word ins = 0b11111111110111111111010101101111;
     ipm.instruction = ins;// jal a0, -4
-    int newPC = ipm.pc - 4;
+    int newPC = ipm.pc - 4 - 4; //4 is subtracted because it is added in execution.
     word returnAaddress = ipm.pc + 4;
     DEBUG_PRINT("pc was: %d\n", ipm.pc);
     JAL(&ipm);
@@ -562,7 +562,7 @@ int JALR_uTest(){
     ipm.registers[a1] = RandW();
     word ins = 0b11111111110001011000010101100111;
     ipm.instruction = ins;// jal a0, a1, -4
-    int newPC = (ipm.registers[a1] - 4) & (~0x00000001);
+    int newPC = ((ipm.registers[a1] - 4) & (~0x00000001)) -4; //4 is subtracted because it is added in execution.
     word returnAddress = ipm.pc + 4;
     DEBUG_PRINT("pc was: %d\n", ipm.pc);
     JALR(&ipm);

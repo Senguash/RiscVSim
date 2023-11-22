@@ -74,7 +74,6 @@ void LUI    (InternalProcessorMemory *ipm);
 void AUIPC  (InternalProcessorMemory *ipm);
 void JAL    (InternalProcessorMemory *ipm);
 void JALR   (InternalProcessorMemory *ipm);
-void PAUSE  (InternalProcessorMemory *ipm);
 void ECALL  (InternalProcessorMemory *ipm);
 
 #endif

@@ -12,6 +12,7 @@ void Compute(InternalProcessorMemory *ipm) {
 		ExecuteInstruction(ipm);
 		ipm->pc += 4;
 	}
+
 }
 /**
 Executes the current instruction in ipm
@@ -57,10 +58,6 @@ void ExecuteInstruction(InternalProcessorMemory *ipm) {
 		case (0b1100111):
 			DEBUG_PRINT("JALR\n");
 			JALR(ipm);
-			break;
-		case (0b0000111):
-			DEBUG_PRINT("PAUSE\n");
-			PAUSE(ipm);
 			break;
 		case (0b1110011):
 			DEBUG_PRINT("ECALL\n");
@@ -483,37 +480,37 @@ void SW(InternalProcessorMemory *ipm) {
 
 void BEQ(InternalProcessorMemory *ipm) {
 	if(ipm->registers[GetRS1(ipm)] == ipm->registers[GetRS2(ipm)]){
-        ipm->pc += GetImmediate12and10to5(ipm);
+        ipm->pc += GetImmediate12and10to5(ipm)-4;
     }
 }
 
 void BNE(InternalProcessorMemory *ipm) {
     if(ipm->registers[GetRS1(ipm)] != ipm->registers[GetRS2(ipm)]){
-        ipm->pc += GetImmediate12and10to5(ipm);
+        ipm->pc += GetImmediate12and10to5(ipm)-4;
     }
 }
 
 void BLT(InternalProcessorMemory *ipm) {
     if(ipm->registers[GetRS1(ipm)] < ipm->registers[GetRS2(ipm)]){
-        ipm->pc += GetImmediate12and10to5(ipm);
+        ipm->pc += GetImmediate12and10to5(ipm)-4;
     }
 }
 
 void BGE(InternalProcessorMemory *ipm) {
     if(ipm->registers[GetRS1(ipm)] >= ipm->registers[GetRS2(ipm)]){
-        ipm->pc += GetImmediate12and10to5(ipm);
+        ipm->pc += GetImmediate12and10to5(ipm)-4;
     }
 }
 
 void BLTU(InternalProcessorMemory *ipm) {
     if(((uWord)ipm->registers[GetRS1(ipm)]) < ((uWord)ipm->registers[GetRS2(ipm)])){
-        ipm->pc += GetImmediate12and10to5(ipm);
+        ipm->pc += GetImmediate12and10to5(ipm)-4;
     }
 }
 
 void BGEU(InternalProcessorMemory *ipm) {
     if(((uWord)ipm->registers[GetRS1(ipm)]) >= ((uWord)ipm->registers[GetRS2(ipm)])){
-        ipm->pc += GetImmediate12and10to5(ipm);
+        ipm->pc += GetImmediate12and10to5(ipm)-4;
     }
 }
 
@@ -527,16 +524,12 @@ void AUIPC(InternalProcessorMemory *ipm) {
 
 void JAL(InternalProcessorMemory *ipm) {
     ipm->registers[GetRD(ipm)] = ipm->pc + 4;
-    ipm->pc = ipm->pc + GetImmediate20and10to1and11and19to12(ipm);
+    ipm->pc = ipm->pc + GetImmediate20and10to1and11and19to12(ipm)-4;
 }
 
 void JALR(InternalProcessorMemory *ipm) {
     ipm->registers[GetRD(ipm)] = ipm->pc + 4;
-    ipm->pc = (ipm->registers[GetRS1(ipm)] + GetImmediate11to0(ipm)) & (~0x00000001);
-}
-
-void PAUSE(InternalProcessorMemory *ipm) {
-	DEBUG_PRINT("Not Implemented\n");
+    ipm->pc = ((ipm->registers[GetRS1(ipm)] + GetImmediate11to0(ipm)) & (~0x00000001))-4;
 }
 
 void ECALL(InternalProcessorMemory *ipm) {
