@@ -575,6 +575,18 @@ int JALR_uTest(){
     }
 }
 
+int LBU_uTest(){
+    InternalProcessorMemory ipm;
+    ipm.instruction = 0b00000000000000110100001010000011; //lbu t0, 0(t1)
+    uByte temp1 = RandUB();
+    DEBUG_PRINT("temp1: %d \n", temp1);
+    word address = 0x100;
+    setUByte(temp1, address);
+    ipm.registers[t1] = address;
+    LBU(&ipm);
+    return Assert_Equal(temp1, ipm.registers[t0]);
+}
+
 int ECALL_uTest() {
     InternalProcessorMemory ipm;
     ipm.instruction = 0b00000000000000000000000001110011; //ecall
@@ -668,7 +680,8 @@ void InstructionSetTestSuite() {
     CreateTest(&SB_uTest, "SB test"),
     CreateTest(&AUIPC_uTest, "AUIPC test"),
     CreateTest(&JAL_uTest, "JAL test"),
-    CreateTest(&JALR_uTest, "JALR test")
+    CreateTest(&JALR_uTest, "JALR test"),
+    CreateTest(&LBU_uTest, "LBU test")
     };
 
     for (int i = 0; i < (sizeof(tests) / sizeof(tests[0])); i++) {

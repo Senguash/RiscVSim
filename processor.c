@@ -461,7 +461,7 @@ void LW(InternalProcessorMemory *ipm) {
 }
 
 void LBU(InternalProcessorMemory *ipm) {
-	DEBUG_PRINT("Not Implemented\n");
+	ipm->registers[GetRD(ipm)] = getUByte(ipm->registers[GetRS1(ipm)] + GetImmediate11to0(ipm));
 }
 
 void LHU(InternalProcessorMemory *ipm) {
