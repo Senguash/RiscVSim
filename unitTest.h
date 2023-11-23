@@ -124,7 +124,7 @@ int LUI_uTest() {
     ipm.instruction = 0b00000000000010001001001010110111; //lui t0, 137
     LUI(&ipm);
     DEBUG_PRINT("t0: %d\n", ipm.registers[t0]);
-    return Assert_Equal(137, ipm.registers[t0]);
+    return Assert_Equal((137 << 12), ipm.registers[t0]);
 }
 
 int SLL_uTest(){

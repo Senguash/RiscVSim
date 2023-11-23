@@ -10,6 +10,7 @@ void Compute(InternalProcessorMemory *ipm) {
 	while (ipm->exitInvoked == 0) {
 		ipm->instruction = getWord((word)ipm->pc);
 		ExecuteInstruction(ipm);
+        ipm->registers[0] = 0;
 		ipm->pc += 4;
 	}
 
@@ -515,7 +516,7 @@ void BGEU(InternalProcessorMemory *ipm) {
 }
 
 void LUI(InternalProcessorMemory *ipm) {
-	ipm->registers[GetRD(ipm)] = GetImmediate31to12(ipm);
+	ipm->registers[GetRD(ipm)] = GetImmediate31to12(ipm)  << 12;
 }
 
 void AUIPC(InternalProcessorMemory *ipm) {

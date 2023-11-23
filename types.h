@@ -15,7 +15,7 @@ typedef uint16_t uHWord;
 typedef uint8_t uByte;
 
 #define BIT_PR_BYTE 8
-#define MAIN_MEM_SIZE 1000000
+#define MAIN_MEM_SIZE 1048576
 
 #define zero 0 //Zero Register
 #define ra 1 //Return Address
