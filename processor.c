@@ -433,7 +433,7 @@ void SRLI(InternalProcessorMemory *ipm) {
 }
 
 void SRAI(InternalProcessorMemory *ipm) {
-    ipm->registers[GetRD(ipm)] = ipm->registers[GetRS1(ipm)] >> GetImmediate11to0(ipm);
+    ipm->registers[GetRD(ipm)] = ipm->registers[GetRS1(ipm)] >> (GetImmediate11to0(ipm) & 0b11111);
 }
 
 void ORI(InternalProcessorMemory *ipm) {
