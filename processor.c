@@ -455,7 +455,7 @@ void LH(InternalProcessorMemory *ipm) {
 }
 
 void LW(InternalProcessorMemory *ipm) {
-	ipm->registers[GetRD(ipm)] = getWord(ipm->registers[GetRS1(ipm) + GetImmediate11to0(ipm)]);
+	ipm->registers[GetRD(ipm)] = getWord(ipm->registers[GetRS1(ipm)] + GetImmediate11to0(ipm));
 }
 
 void LBU(InternalProcessorMemory *ipm) {
