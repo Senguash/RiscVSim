@@ -445,12 +445,12 @@ void ANDI(InternalProcessorMemory *ipm) {
 }
 
 void LB(InternalProcessorMemory *ipm) {
-	ipm->registers[GetRD(ipm)] = getByte(ipm->registers[GetRS1(ipm) + GetImmediate11to0(ipm)]);
+	ipm->registers[GetRD(ipm)] = getByte(ipm->registers[GetRS1(ipm)] + GetImmediate11to0(ipm));
 	ipm->registers[GetRD(ipm)] = (ipm->registers[GetRD(ipm)] & 0xFF) | ((ipm->registers[GetRD(ipm)] & 0x80) ? 0xFFFFFF00 : 0);
 }
 
 void LH(InternalProcessorMemory *ipm) {
-	ipm->registers[GetRD(ipm)] = getHWord(ipm->registers[GetRS1(ipm) + GetImmediate11to0(ipm)]);
+	ipm->registers[GetRD(ipm)] = getHWord(ipm->registers[GetRS1(ipm)] + GetImmediate11to0(ipm));
 	ipm->registers[GetRD(ipm)] = (ipm->registers[GetRD(ipm)] & 0xFFFF) | ((ipm->registers[GetRD(ipm)] & 0x8000) ? 0xFFFF0000 : 0);
 }
 
