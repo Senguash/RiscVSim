@@ -16,7 +16,7 @@ void readFile(char file[]){
     initMem();
     uWord pc = getInitPC();
     byte readByte;
-    while (pc <= fileSize){ //todo måden filen læses på skal ændres
+    while (pc <= fileSize){
         readByte = fgetc(ptr_myfile);
         setByte(readByte,pc);
         pc++;
