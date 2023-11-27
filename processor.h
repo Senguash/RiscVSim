@@ -6,6 +6,7 @@
 #include "memMan.h"
 #include "utils.h"
 #include <inttypes.h>
+#include <string.h>
 
 #ifndef PROCESSOR_H
 #define PROCESSOR_H
@@ -23,6 +24,7 @@ void ExecuteInstruction(InternalProcessorMemory *ipm);
 void PrintWordInAllFormats(word w);
 void DebugPrintWord(word w);
 void PrintRegisters(InternalProcessorMemory* ipm);
+void DumpRegisters(InternalProcessorMemory* ipm, char *fileName);
 void ZeroOutRegisters(InternalProcessorMemory* ipm);
 
 byte GetFunct3(word instruction);

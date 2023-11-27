@@ -26,6 +26,7 @@ int main(int argc, char* argv[]){
             ipm.pc = getInitPC();
             Compute(&ipm);
             PrintRegisters(&ipm);
+            DumpRegisters(&ipm,testfile);
         }
     } else{
         for (int i = 1; i < argc; ++i) {
@@ -35,6 +36,8 @@ int main(int argc, char* argv[]){
             ipm.pc = getInitPC();
             Compute(&ipm);
             PrintRegisters(&ipm);
+            DumpRegisters(&ipm, argv[i]);
+
         }
     }
 }

@@ -81,8 +81,20 @@ void PrintRegisters(InternalProcessorMemory* ipm) {
 		PrintWordInAllFormats(ipm->registers[i]);
 	}
 }
+
+void DumpRegisters(InternalProcessorMemory* ipm, char *fileName){
+    char resFile[100];
+    strcpy(resFile,fileName);
+    strcat(resFile, ".res");
+    FILE* file = fopen(resFile, "wb");
+    for (int i = 0; i < 32; ++i) {
+        fwrite(&ipm->registers[i], sizeof(word), 1, file);
+    }
+    fclose(file);
+}
+
 void ZeroOutRegisters(InternalProcessorMemory* ipm) {
-	for (int i = 0; i < 32; i++) {
+	for (int i = 0; i < 31; i++) {
 		ipm->registers[i] = 0;
 	}
 }
