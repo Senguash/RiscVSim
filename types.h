@@ -7,6 +7,9 @@
 
 #include <stdint.h>
 
+/**
+ * types defined to lock size across platform
+ */
 typedef int32_t word;
 typedef int16_t hWord;
 typedef int8_t byte;
@@ -15,8 +18,9 @@ typedef uint16_t uHWord;
 typedef uint8_t uByte;
 
 #define BIT_PR_BYTE 8
-#define MAIN_MEM_SIZE 1048576
+#define MAIN_MEM_SIZE 1048576 // 1 MiB
 
+//we know not all are in use and it should be an enumeration.
 #define zero 0 //Zero Register
 #define ra 1 //Return Address
 #define sp 2 //Stack Pointer

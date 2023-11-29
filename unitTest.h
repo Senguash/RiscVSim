@@ -7,6 +7,16 @@
 #include "processor.h"
 #include "unitTestFramework.h"
 
+/**
+ * *****************************
+ *           Unit test
+ * *****************************
+ *
+ * The folowing many function are unit test for testing and making sure we dont break anything while writhing more awesome code.
+ * The bottom 3 function are different and are commented.
+ */
+
+
 /*
 Add a unit test by creating a function, and then adding an entry in one of test suites below with create test.
 */
@@ -639,6 +649,10 @@ int ECALL_uTest() {
     return Assert_Equal(1, 1);
 }
 
+/**
+ * Memory unit test
+ * a collection of all the mem tests and there execution.
+ */
 void MemoryTestSuite() {
     Test tests[] = {
     CreateTest(&Mem_word_uTest, "Mem word test"),
@@ -654,6 +668,10 @@ void MemoryTestSuite() {
     }
 }
 
+/**
+ * Instruction unit test
+ * a collection of all the inst tests and there execution.
+ */
 void InstructionSetTestSuite() {
     Test tests[] = {
     CreateTest(&ADD_uTest, "ADD test"),
@@ -702,6 +720,9 @@ void InstructionSetTestSuite() {
     }
 }
 
+/**
+ * run them all
+ */
 void ExecuteAllTests() {
     MemoryTestSuite();
     InstructionSetTestSuite();

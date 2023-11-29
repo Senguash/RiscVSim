@@ -12,6 +12,10 @@
 #define PROCESSOR_H
 
 typedef struct InternalProcessorMemory InternalProcessorMemory;
+
+/**
+ * InternalProcessorMemory is our "object" for keeping the most used values in one packed.
+ */
 struct InternalProcessorMemory {
 	word registers[32]; //Register Array
 	int pc; //Process Counter

@@ -9,6 +9,13 @@
 #ifndef UNITTESTFRAMEWORK_H
 #define UNITTESTFRAMEWORK_H
 
+/**
+ * *****************************
+ *        Unit test setup
+ * *****************************
+ */
+
+
 typedef struct Test Test;
 struct Test {
     int (*test_funct_ptr)();
@@ -45,6 +52,13 @@ Test CreateTest(int (*funct_ptr)(), char* testName) {
     test.name = testName;
     return test;
 }
+
+#define Assert_Equal(a,b) (a == b)
+/**
+ * *****************************
+ */
+
+
 
 /**
 Gets a randomized word
@@ -83,6 +97,6 @@ uByte RandUB() {
     return (uByte) rand() % 65536;
 }
 
-#define Assert_Equal(a,b) (a == b)
+
 
 #endif

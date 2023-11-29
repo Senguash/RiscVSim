@@ -3,7 +3,10 @@
 //
 #include "processor.h"
 
-
+/**
+ * execute the program in memory
+ * @param ipm
+ */
 void Compute(InternalProcessorMemory *ipm) {
 	ZeroOutRegisters(ipm);
 	ipm->exitInvoked = 0;
@@ -16,7 +19,8 @@ void Compute(InternalProcessorMemory *ipm) {
 
 }
 /**
-Executes the current instruction in ipm
+ * Executes the current instruction in ipm
+ * @param ipm
  */
 void ExecuteInstruction(InternalProcessorMemory *ipm) {
 	byte opcode = ipm->instruction & 0b01111111;
@@ -69,12 +73,26 @@ void ExecuteInstruction(InternalProcessorMemory *ipm) {
 			ipm->exitInvoked = 1;
 	}
 }
+/**
+ * prints word in dec, hex and bin
+ * @param w word
+ */
 void PrintWordInAllFormats(word w) {
 	printf("dec:%-10d hex:0x%-10x bin:"WORD_TO_BINARY_PATTERN"\n", w, w, WORD_TO_BINARY(w));
 }
+/**
+ * prints word in dec, hex and bin
+ * only when debug flag is set in utils.h
+ * @param w word
+ */
 void DebugPrintWord(word w) {
 	DEBUG_PRINT("dec:%-10d hex:0x%-10x bin:"WORD_TO_BINARY_PATTERN"\n", w, w, WORD_TO_BINARY(w));
 }
+
+/**
+ * Prints all regs in ipm
+ * @param ipm
+ */
 void PrintRegisters(InternalProcessorMemory* ipm) {
 	for (int i = 0; i < 32; i++) {
 		printf("Reg:%2d ", i);
@@ -82,6 +100,11 @@ void PrintRegisters(InternalProcessorMemory* ipm) {
 	}
 }
 
+/**
+ * creats a dump file at fileName with all regs from ipm in binary littel-endian
+ * @param ipm
+ * @param fileName
+ */
 void DumpRegisters(InternalProcessorMemory* ipm, char *fileName){
     char resFile[100];
     strcpy(resFile,fileName);
@@ -93,70 +116,74 @@ void DumpRegisters(InternalProcessorMemory* ipm, char *fileName){
     fclose(file);
 }
 
+/**
+ * zeros all regs in ipm
+ * @param ipm
+ */
 void ZeroOutRegisters(InternalProcessorMemory* ipm) {
 	for (int i = 0; i < 31; i++) {
 		ipm->registers[i] = 0;
 	}
 }
+
 /**
-Gets the 3-bit function code (additional opcode) of an instruction
+ * Gets the 3-bit function code (additional opcode) of an instruction
  */
 byte GetFunct3(word instruction) {
 	return (byte)(instruction >> 12) & 0b0000111;
 }
+
 /**
-Gets the 7-bit function code (additional opcode) of an instruction
+ * Gets the 7-bit function code (additional opcode) of an instruction
  */
 byte GetFunct7(word instruction) {
 	return (byte)(instruction >> 25) & 0b1111111;
 }
+
 /**
-Gets the index of the destination register
+ * Gets the index of the destination register
  */
 byte GetRD(InternalProcessorMemory *ipm) {
 	return (byte)(ipm->instruction >> 7) & 0b00011111;
 }
+
 /**
-Gets the index of first source register
+ * Gets the index of first source register
  */
 byte GetRS1(InternalProcessorMemory *ipm) {
 	return ((byte)(ipm->instruction >> 15)) & 0b00011111;
 }
+
 /**
-Gets the index of second source register
+ * Gets the index of second source register
  */
 byte GetRS2(InternalProcessorMemory *ipm) {
 	return (byte)(ipm->instruction >> 20) & 0b00011111;
 }
-/**
-Gets the value of a register by index
- */
-word GetRegisterValue(byte index, InternalProcessorMemory *ipm) {
-	return ipm->registers[index];
-}
-/**
-Sets the value of a register by index
- */
-void SetRegisterValue(byte index, word input, InternalProcessorMemory *ipm) {
-	ipm->registers[index] = input;
-}
 
+/**
+ * Extract immediate value from a word(instruction) at bit [11:0]
+ * @param ipm
+ * @return uWord as a word with immediate value
+ */
 word GetImmediate11to0Unsigned(InternalProcessorMemory* ipm) {
 	return (word)(ipm->instruction >> 20) & 0b00000000000000000000111111111111;
 }
+
+/**
+ * Extract immediate value from a word(instruction) at bit [11:0]
+ * @param ipm
+ * @return word with immediate value
+ */
 word GetImmediate11to0(InternalProcessorMemory* ipm) {
     return (word)(ipm->instruction >> 20);
 }
 
-uWord GetImmediate12and10to5Unsigned(InternalProcessorMemory* ipm) {
-    word toReturn = 0;
-    toReturn = toReturn | (((ipm->instruction >> 31) & 0b00000000000000000000000000000001) << 12); // bit 12
-    toReturn = toReturn | (((ipm->instruction >> 25) & 0b00000000000000000000000000111111) << 5); // bit 10:5
-    toReturn = toReturn | (((ipm->instruction >> 8) & 0b00000000000000000000000000001111) << 1); // bit 4:1
-    toReturn = toReturn | (((ipm->instruction >> 7) & 0b00000000000000000000000000000001) << 11); // bit 11
-    return toReturn;
-}
-
+/**
+ * Extract immediate value from a word(instruction) at bit [12][10:5]
+ * @param ipm
+ * @return word with immediate value
+ */
 word GetImmediate12and10to5(InternalProcessorMemory* ipm) {
     word toReturn = 0;
     toReturn = toReturn | ((ipm->instruction >> 31) << 12); // bit 12
@@ -166,6 +193,11 @@ word GetImmediate12and10to5(InternalProcessorMemory* ipm) {
     return toReturn;
 }
 
+/**
+ * Extract immediate value from a word(instruction) at bit [20][19:12][11][10:1]
+ * @param ipm
+ * @return word with immediate value
+ */
 word GetImmediate20and10to1and11and19to12(InternalProcessorMemory* ipm){
     word toReturn = 0;
     toReturn = toReturn | ((ipm->instruction >> 31) << 20); // bit 20
@@ -175,26 +207,30 @@ word GetImmediate20and10to1and11and19to12(InternalProcessorMemory* ipm){
     return toReturn;
 }
 
+/**
+ * Extract immediate value from a word(instruction) at bit [31:12]
+ * @param ipm
+ * @return word with immediate value
+ */
 word GetImmediate31to12(InternalProcessorMemory* ipm) {
 	return (ipm->instruction >> 12);
 }
 
-uWord GetImmediate31to12Unsigned(InternalProcessorMemory* ipm) {
-    return (ipm->instruction >> 12) & 0b11111111111111111111;
-}
-
+/**
+ * Extract immediate value from a word(instruction) at bit [11:5]
+ * @param ipm
+ * @return word with immediate value
+ */
 word GetImmediate11to5(InternalProcessorMemory* ipm){
 	word temp1 = (ipm->instruction >> 25) << 5;
 	word temp2 = (ipm->instruction >> 7 ) & 0x0000001f;
 	return temp1 | temp2;
 }
 
-word GetImmediate11to5Unsigned(InternalProcessorMemory* ipm){
-    word temp1 = (ipm->instruction >> 25) & 0b00000000000000000000000001111111 << 5;
-    word temp2 = (ipm->instruction >> 7) & 0x0000001f;
-    return temp1 | temp2;
-}
-
+/**
+ * Called by ExecuteInstruction for segmentation. Is a sub switch for execution of instruction.
+ * @param ipm
+ */
 void LogicalArithmetic(InternalProcessorMemory *ipm) {
 	switch (GetFunct3(ipm->instruction)) {
 	case (0b000):
@@ -252,6 +288,10 @@ void LogicalArithmetic(InternalProcessorMemory *ipm) {
 	}
 }
 
+/**
+ * Called by ExecuteInstruction for segmentation. Is a sub switch for execution of instruction.
+ * @param ipm
+ */
 void LogicalArithmeticImmediate(InternalProcessorMemory *ipm) {
 	switch (GetFunct3(ipm->instruction)) {
 	case (0b000):
@@ -299,6 +339,10 @@ void LogicalArithmeticImmediate(InternalProcessorMemory *ipm) {
 	}
 }
 
+/**
+ * Called by ExecuteInstruction for segmentation. Is a sub switch for execution of instruction.
+ * @param ipm
+ */
 void Load(InternalProcessorMemory *ipm) {
 	switch (GetFunct3(ipm->instruction)) {
 	case (0b000):
@@ -324,6 +368,10 @@ void Load(InternalProcessorMemory *ipm) {
 	}
 }
 
+/**
+ * Called by ExecuteInstruction for segmentation. Is a sub switch for execution of instruction.
+ * @param ipm
+ */
 void Store(InternalProcessorMemory *ipm) {
 	switch (GetFunct3(ipm->instruction)) {
 	case (0b000):
@@ -340,7 +388,10 @@ void Store(InternalProcessorMemory *ipm) {
 		break;
 	}
 }
-
+/**
+ * Called by ExecuteInstruction for segmentation. Is a sub switch for execution of instruction.
+ * @param ipm
+ */
 void Branch(InternalProcessorMemory *ipm) {
 	switch (GetFunct3(ipm->instruction)) {
 	case (0b000):
@@ -370,11 +421,17 @@ void Branch(InternalProcessorMemory *ipm) {
 	}
 }
 
+
+/**
+ * **********************************************
+ *           single RISC-V instructions
+ * **********************************************
+ *
+ * The following functions are not commented.
+ * They are all our RISC-v instruction implementation
+ */
+
 void ADD(InternalProcessorMemory *ipm) {
-	//DEBUG_PRINT("RS1 "BYTE_TO_BINARY_PATTERN"\n", BYTE_TO_BINARY(GetRS1(ipm)));
-	//DEBUG_PRINT("RS1 Content: %d\n", ipm->registers[GetRS1(ipm)]);
-	//DEBUG_PRINT("RS2 "BYTE_TO_BINARY_PATTERN"\n", BYTE_TO_BINARY(GetRS2(ipm)));
-	//DEBUG_PRINT("RS2 Content: %d\n", ipm->registers[GetRS2(ipm)]);
 	ipm->registers[GetRD(ipm)] = ipm->registers[GetRS1(ipm)] + ipm->registers[GetRS2(ipm)];
 }
 
@@ -546,8 +603,6 @@ void JALR(InternalProcessorMemory *ipm) {
 }
 
 void ECALL(InternalProcessorMemory *ipm) {
-	//DEBUG_PRINT("Value of a7: %d\n", ipm->registers[a7]);
-	//DEBUG_PRINT("Value of funct7: %d\n", GetFunct7(ipm));
 	switch (ipm->registers[a7]) {
 		case 1: //PrintInt
 		{
@@ -565,7 +620,6 @@ void ECALL(InternalProcessorMemory *ipm) {
 		{
 			word address = ipm->registers[a0];
 			byte c = getByte(address);
-			//DEBUG_PRINT(" "BYTE_TO_BINARY_PATTERN, BYTE_TO_BINARY(c));
 			while (c != 0) 
 			{
 				printf("%c", c);
@@ -593,8 +647,9 @@ void ECALL(InternalProcessorMemory *ipm) {
 		break;
 		case 17: //GetCWD
 		{
-
+            //not done cos not needed
 		}
+        //rest is not done con not needed
 		break;
 	}
 }
