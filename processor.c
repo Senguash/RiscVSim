@@ -24,13 +24,6 @@ void Compute(InternalProcessorMemory *ipm) {
  */
 void ExecuteInstruction(InternalProcessorMemory *ipm) {
 	byte opcode = ipm->instruction & 0b01111111;
-    /*DEBUG_PRINT("\nInst="BYTE_TO_BINARY_PATTERN, BYTE_TO_BINARY((byte)(ipm->instruction >> 8*3)));
-    DEBUG_PRINT(" "BYTE_TO_BINARY_PATTERN, BYTE_TO_BINARY((byte)(ipm->instruction >> 8*2)));
-    DEBUG_PRINT(" "BYTE_TO_BINARY_PATTERN, BYTE_TO_BINARY((byte)(ipm->instruction >> 8)));
-    DEBUG_PRINT(" "BYTE_TO_BINARY_PATTERN, BYTE_TO_BINARY((byte)(ipm->instruction)));
-	DEBUG_PRINT("\nOpcode="BYTE_TO_BINARY_PATTERN, BYTE_TO_BINARY(opcode));
-	DEBUG_PRINT("\nFunct3="BYTE_TO_BINARY_PATTERN, BYTE_TO_BINARY(GetFunct3(ipm->instruction)));
-	DEBUG_PRINT("\nFunct7="BYTE_TO_BINARY_PATTERN, BYTE_TO_BINARY(GetFunct7(ipm->instruction)));*/
     DEBUG_PRINT("Inst="WORD_TO_BINARY_PATTERN" ", WORD_TO_BINARY((ipm->instruction)));
 	switch (opcode) {
 		case (0b0110011):
