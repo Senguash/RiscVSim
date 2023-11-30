@@ -604,7 +604,7 @@ void ECALL(InternalProcessorMemory *ipm) {
 		break;
 		case 2: //PrintFloat
 		{
-			float* ptr = &ipm->registers[a0];
+			float* ptr = (float*) &ipm->registers[a0];
 			double d = (double)*ptr;
 			printf("%f\n", d);
 		}
